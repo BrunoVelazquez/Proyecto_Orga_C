@@ -1,1 +1,1 @@
-# Proyecto_Orga_C
+# Proyecto Organización de Computadoras en C
