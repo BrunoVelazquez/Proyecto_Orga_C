@@ -6,12 +6,12 @@ void crear_lista(tLista* l){
     l = (tLista) malloc(sizeof(struct celda));
     (*l)->elemento = NULL;
     (*l)->siguiente = NULL;
-    
+
 }
 
 void l_insertar(tLista l, tPosicion p, tElemento e){
 
-    
+
 
 }
 
