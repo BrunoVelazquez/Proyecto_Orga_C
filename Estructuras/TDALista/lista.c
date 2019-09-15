@@ -92,7 +92,10 @@ extern tPosicion l_anterior(tLista l, tPosicion p);
     return nodo_actual;
 }
 
-
+ /**
+ Recupera y retorna la �ltima posici�n de L.
+ Si L es vac�a, primera(L) = ultima(L) = fin(L).
+**/
 extern tPosicion l_ultima(tLista l){
     tPosicion nodo_actual = l;
 
