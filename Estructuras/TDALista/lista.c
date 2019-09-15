@@ -66,24 +66,14 @@ tPosicion l_fin(tLista l){
 }
 
 /**
- Destruye la lista L, elimininando cada una de sus celdas. Los elementos almacenados en las celdas son eliminados mediante la funci�n fEliminar parametrizada.
-**/
-extern void l_destruir(tLista * l, void (*fEliminar)(tElemento));
-
-
-
-
-
-/**
  Recupera y retorna la posici�n anterior a P en L.
  Si P es primera(L), finaliza indicando LST_NO_EXISTE_ANTERIOR.
 **/
-extern tPosicion l_anterior(tLista l, tPosicion p);
+extern tPosicion l_anterior(tLista l, tPosicion p){
     tPosicion nodo_actual = l;
 
-    if(nodo_actual->siguiente == p){// cuando p es la primera posicion.
+    if(p == l_primera(l))// cuando p es la primera posicion.
      exit(LST_NO_EXISTE_ANTERIOR);
-    }
 
     while(nodo_actual->siguiente != NULL)  && (nodo_actual->siguiente != p)){
     nodo_actual=nodo_actual->;
@@ -99,11 +89,15 @@ extern tPosicion l_anterior(tLista l, tPosicion p);
 extern tPosicion l_ultima(tLista l){
     tPosicion nodo_actual = l;
 
-    if(nodo_actual->elemento!= NULL){
+    while (nodo_actual->siguiente != NULL)
+        if ((nodo_actual->siguiente)->siguiente != NULL)
+            nodo_actual = nodo_actual->siguiente;
+
+    /*if(nodo_actual->elemento!= NULL){
     while((nodo_actual->siguiente!= NULL)&& (nodo_actual->siguiente->siguiente != NULL)){
         nodo_actual=nodo_actual->siguiente;
         }
-    }
+    }*/
     return nodo_actual;
 }
 
