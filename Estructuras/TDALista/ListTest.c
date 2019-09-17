@@ -5,6 +5,7 @@
 void l_imprimir(tLista l)
 {
     tPosicion pos = l->siguiente;
+    printf("Lista completa: ");
     while (pos != NULL)
     {
         printf("%d , ", *(int *)pos->elemento);
@@ -29,15 +30,17 @@ int main()
     *c = 3;
     tLista lista = (tLista) malloc(sizeof(struct celda));
     crear_lista(&lista);
-    l_eliminar(lista,l_fin(lista),&fEliminar);
     l_imprimir(lista);
     l_insertar(lista, l_primera(lista),b);
     l_imprimir(lista);
-    l_insertar(lista,l_siguiente(lista, l_primera(lista)),c);
+    l_eliminar(lista, l_primera(lista),&fEliminar);
+    l_imprimir(lista);
+    l_insertar(lista, l_primera(lista),c);
+    l_imprimir(lista);
+    /*l_insertar(lista,l_siguiente(lista, l_primera(lista)),c);
     l_imprimir(lista);
     int* d = (int*) l_recuperar(lista,l_ultima(lista));
     printf("%d\n",*d);
-    l_eliminar(lista,l_siguiente(lista,l_primera(lista)),&fEliminar);
-    l_imprimir(lista);
+    l_imprimir(lista);*/
     return 0;
 }
