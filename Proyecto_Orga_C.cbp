@@ -35,6 +35,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Estructuras/TDAArbol/arbol.h" />
+		<Unit filename="Estructuras/TDALista/ListTest.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Estructuras/TDALista/lista.c">
 			<Option compilerVar="CC" />
 		</Unit>

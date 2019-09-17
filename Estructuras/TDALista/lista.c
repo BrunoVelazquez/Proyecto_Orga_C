@@ -1,5 +1,8 @@
 #include "lista.h"
 #include <stdlib.h>
+#include <stdio.h>
+
+void fEliminar(tElemento e);
 
 void crear_lista(tLista* l)
 {
@@ -27,16 +30,25 @@ void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento))
 {
     if (p == l_fin(l))
         exit(LST_POSICION_INVALIDA);
-    
+
     fEliminar((p->siguiente)->elemento);
     (p->siguiente)->elemento = NULL;
     p->siguiente = (p->siguiente)->siguiente;
-    free(p->siguiente);  
+    tPosicion pos_NULL = p->siguiente;
+    free(pos_NULL);
+    pos_NULL = NULL;
 }
 
 void l_destruir(tLista * l, void (*fEliminar)(tElemento))
 {
+    while ((*l)->siguiente != NULL)
+        l_destruir((*l)->siguiente, *fEliminar);
 
+    fEliminar((*l)->elemento);
+    (*l)->elemento  = NULL;
+    (*l)->siguiente = NULL;
+    free(*l);
+    *l = NULL;
 }
 
 tElemento l_recuperar(tLista l, tPosicion p)
@@ -44,7 +56,7 @@ tElemento l_recuperar(tLista l, tPosicion p)
     if (p == l_fin(l))
         exit(LST_POSICION_INVALIDA);
     return (p->siguiente)->elemento;
-    
+
 }
 
 tPosicion l_primera(tLista l)
@@ -56,7 +68,7 @@ tPosicion l_siguiente(tLista l, tPosicion p)
 {
     if (p == l_fin(l))
         exit(LST_NO_EXISTE_SIGUIENTE);
-    
+
     return p->siguiente;
 }
 
@@ -66,7 +78,7 @@ tPosicion l_anterior(tLista l, tPosicion p)
         exit(LST_NO_EXISTE_ANTERIOR);
 
     tPosicion nodo_actual = l;
-    while(nodo_actual->siguiente != p) //Preguntar NULL
+    while(nodo_actual->siguiente != p && nodo_actual->siguiente != NULL)
         nodo_actual = nodo_actual->siguiente;
 
     return nodo_actual;
@@ -76,19 +88,19 @@ tPosicion l_ultima(tLista l)
 {
     tPosicion nodo_actual = l;
 
-    while (nodo_actual->siguiente != NULL)
-        if ((nodo_actual->siguiente)->siguiente != NULL)
+    while (nodo_actual->siguiente != NULL && (nodo_actual->siguiente)->siguiente != NULL)
             nodo_actual = nodo_actual->siguiente;
+
     return nodo_actual;
 }
 
 tPosicion l_fin(tLista l)
 {
     tPosicion toRet = l;
-    
+
     while (toRet->siguiente != NULL)
         toRet = toRet->siguiente;
-    
+
     return toRet;
 }
 
