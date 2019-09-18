@@ -39,18 +39,26 @@ void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento))
     pos_NULL = NULL;
 }
 
-void l_destruir(tLista * l, void (*fEliminar)(tElemento))
-{
-    while ((*l)->siguiente != NULL)
-        l_destruir((*l)->siguiente, *fEliminar);
+void l_destruir(tLista * l, void (*fEliminar)(tElemento)){
+    tPosicion p= (tPosicion) malloc(sizeof(struct celda));
+    p=l //fijate si esto esta bien
 
-    fEliminar((*l)->elemento);
-    (*l)->elemento  = NULL;
-    (*l)->siguiente = NULL;
-    free(*l);
-    *l = NULL;
+    destruirREC(*p,void(*fEliminar(tElemento)));
+
+    *l= NULL; //elimino el centinela
 }
 
+private destruirREC(tPosicion* p, void(*fEliminar(tElemento))){
+
+ while ((*p)->siguiente != NULL)
+        destruirREC((*p)->siguiente, *fEliminar));
+
+    fEliminar((*p)->elemento);
+    (*p)->elemento  = NULL;
+    (*p)->siguiente = NULL;
+    free(*p);
+    *p = NULL;
+}
 tElemento l_recuperar(tLista l, tPosicion p)
 {
     if (p == l_fin(l))
