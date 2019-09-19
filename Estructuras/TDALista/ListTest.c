@@ -7,16 +7,16 @@
 //#define DEBUG_SIGUIENTE
 //#define DEBUG_ANTERIOR
 
-void l_imprimir(tLista l)
+void l_imprimir(tLista lista)
 {
-    tPosicion cursor = l_primera(l);
+    tPosicion cursor = l_primera(lista);
     printf("Lista completa: ");
-    while (cursor != l_fin(l))
+    while (cursor->siguiente != NULL)
     {
-        printf("%d ,",*((int*) l_recuperar(l,cursor)));
+        printf("%d ,",*((int*) l_recuperar(lista,cursor)));
         cursor = cursor->siguiente;
     }
-    printf("\n");
+    printf("\nLongitud lista: %d\n", l_longitud(lista));
 }
 
 void fEliminar(tElemento e)
@@ -35,10 +35,14 @@ int main() //TEST
     *c = 2;
     tLista lista;
     crear_lista(&lista);
-    l_insertar(lista, l_primera(lista),b);
+    l_insertar(lista, l_primera(lista),a);
+    l_insertar(lista, l_fin(lista),b);
+    l_insertar(lista, l_ultima(lista),c);
     l_imprimir(lista);
     #ifdef DEBUG_ELIMINAR
-    l_eliminar(lista,l_fin(lista),&fEliminar);
+    l_eliminar(lista,l_primera(lista),&fEliminar);
+    l_eliminar(lista,l_ultima(lista),&fEliminar);
+    l_imprimir(lista);
     #endif // DEBUG_ELIMINAR
     #ifdef DEBUG_RECUPERAR
     l_recuperar(lista,l_fin(lista));
@@ -49,8 +53,7 @@ int main() //TEST
     #ifdef DEBUG_ANTERIOR
     l_anterior(lista,l_primera(lista));
     #endif // DEBUG_ANTERIOR
-    l_insertar(lista,l_siguiente(lista, l_primera(lista)),c);
-    l_imprimir(lista);
+
     l_destruir(&lista,&fEliminar);
     return 0;
 }

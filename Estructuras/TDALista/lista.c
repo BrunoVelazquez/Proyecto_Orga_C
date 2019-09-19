@@ -2,47 +2,45 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-//#define DEBUG
-
 void fEliminar(tElemento e);
-void destruirREC(tPosicion p, void(*fEliminar)(tElemento));
+void destruirREC(tPosicion pos, void(*fEliminar)(tElemento));
 
-void crear_lista(tLista* l)
+void crear_lista(tLista* lista)
 {
-    (*l) = (tLista) malloc(sizeof(struct celda));
-    if (*l == NULL)
+    (*lista) = (tLista) malloc(sizeof(struct celda));
+    if (*lista == NULL)
         exit(LST_ERROR_MEMORIA);
 
-    (*l)->elemento = NULL;
-    (*l)->siguiente = NULL;
+    (*lista)->elemento = NULL;
+    (*lista)->siguiente = NULL;
 }
 
-void l_insertar(tLista l, tPosicion p, tElemento e)
+void l_insertar(tLista lista, tPosicion pos, tElemento e)
 {
-    tPosicion nodo_nuevo = (tPosicion) malloc(sizeof(struct celda));
-    if (nodo_nuevo == NULL)
+    tPosicion celda_nueva = (tPosicion) malloc(sizeof(struct celda));
+    if (celda_nueva == NULL)
         exit(LST_ERROR_MEMORIA);
 
-    nodo_nuevo->elemento = e;
-    nodo_nuevo->siguiente = p->siguiente;
-    p->siguiente = nodo_nuevo;
+    celda_nueva->elemento = e;
+    celda_nueva->siguiente = pos->siguiente;
+    pos->siguiente = celda_nueva;
 }
 
-void l_eliminar(tLista l, tPosicion p, void (*fEliminar)(tElemento))
+void l_eliminar(tLista lista, tPosicion pos, void (*fEliminar)(tElemento))
 {
-    if (p == l_fin(l))
+    if (pos->siguiente == NULL)
         exit(LST_POSICION_INVALIDA);
 
-    fEliminar((p->siguiente)->elemento);
-    (p->siguiente)->elemento = NULL;
-    tPosicion pos_NULL = p->siguiente;
-    p->siguiente = (p->siguiente)->siguiente;
+    fEliminar((pos->siguiente)->elemento);
+    (pos->siguiente)->elemento = NULL;
+    tPosicion pos_NULL = pos->siguiente;
+    pos->siguiente = (pos->siguiente)->siguiente;
     free(pos_NULL);
 }
 
-void l_destruir(tLista * l, void (*fEliminar)(tElemento))
+void l_destruir(tLista * lista, void (*fEliminar)(tElemento))
 {
-    tPosicion centinela = *l;
+    tPosicion centinela = *lista;
 
     if (centinela->siguiente != NULL)
     {
@@ -51,75 +49,72 @@ void l_destruir(tLista * l, void (*fEliminar)(tElemento))
 
     centinela->siguiente = NULL;
     free(centinela);
-    l= NULL;
+    lista= NULL;
 }
 
-void destruirREC(tPosicion p, void(*fEliminar)(tElemento))
+void destruirREC(tPosicion pos, void(*fEliminar)(tElemento))
 {
-    while (p->siguiente != NULL)
+    while (pos->siguiente != NULL)
     {
-        destruirREC(p->siguiente, fEliminar);
-        p->siguiente = NULL;
+        destruirREC(pos->siguiente, fEliminar);
+        pos->siguiente = NULL;
     }
 
-    #ifdef DEBUG
-    printf("Elimando elemento");
-    #endif
-    fEliminar(p->elemento);
-    p->elemento  = NULL;
-    free(p);
-    p = NULL;
+    fEliminar(pos->elemento);
+    pos->elemento  = NULL;
+    free(pos);
+    pos = NULL;
 }
 
-tElemento l_recuperar(tLista l, tPosicion p)
+tElemento l_recuperar(tLista lista, tPosicion pos)
 {
-    if (p == l_fin(l))
+    if (pos->siguiente == NULL)
         exit(LST_POSICION_INVALIDA);
 
-    return (p->siguiente)->elemento;
+    return (pos->siguiente)->elemento;
 }
 
-tPosicion l_primera(tLista l)
+tPosicion l_primera(tLista lista)
 {
-    return l;
+    return lista;
 }
 
-tPosicion l_siguiente(tLista l, tPosicion p)
+tPosicion l_siguiente(tLista lista, tPosicion pos)
 {
-    if (p == l_fin(l))
+    if (pos->siguiente == NULL)
         exit(LST_NO_EXISTE_SIGUIENTE);
 
-    return p->siguiente;
+    return pos->siguiente;
 }
 
-tPosicion l_anterior(tLista l, tPosicion p)
+tPosicion l_anterior(tLista lista, tPosicion pos)
 {
-    if(p == l_primera(l))
+    if(pos == l_primera(lista))
         exit(LST_NO_EXISTE_ANTERIOR);
 
-    tPosicion nodo_actual = l;
-    while(nodo_actual->siguiente != p && nodo_actual->siguiente != NULL)
+    tPosicion celda_actual = lista;
+    while(celda_actual->siguiente != pos && celda_actual->siguiente != NULL)
     {
-        nodo_actual = nodo_actual->siguiente;
+        celda_actual = celda_actual->siguiente;
     }
 
-    return nodo_actual;
+    return celda_actual;
 }
 
-tPosicion l_ultima(tLista l)
+tPosicion l_ultima(tLista lista)
 {
-    tPosicion nodo_actual = l;
-    while (nodo_actual->siguiente != NULL && (nodo_actual->siguiente)->siguiente != NULL)
+    tPosicion celda_actual = lista;
+    while (celda_actual->siguiente != NULL && (celda_actual->siguiente)->siguiente != NULL)
     {
-        nodo_actual = nodo_actual->siguiente;
+        celda_actual = celda_actual->siguiente;
     }
 
-    return nodo_actual;
+    return celda_actual;
 }
 
-tPosicion l_fin(tLista l)
+tPosicion l_fin(tLista lista)
 {
-    tPosicion toRet = l;
+    tPosicion toRet = lista;
     while (toRet->siguiente != NULL)
     {
         toRet = toRet->siguiente;
@@ -128,10 +123,10 @@ tPosicion l_fin(tLista l)
     return toRet;
 }
 
-int l_longitud(tLista l)
+int l_longitud(tLista lista)
 {
     int contador = 0;
-    tPosicion nodo = l;
+    tPosicion nodo = lista;
     while (nodo->siguiente != NULL)
     {
         nodo = nodo->siguiente;
