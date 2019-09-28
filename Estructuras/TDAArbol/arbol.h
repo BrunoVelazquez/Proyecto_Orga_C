@@ -22,21 +22,21 @@ typedef struct arbol * tArbol;
 
 
 /**
-Inicializa un árbol vacío.
-Una referencia al árbol creado es referenciado en *A.
+Inicializa un ï¿½rbol vacï¿½o.
+Una referencia al ï¿½rbol creado es referenciado en *A.
 **/
 extern void crear_arbol(tArbol * a);
 
 /**
-Crea la raíz de A.
-Si A no es vacío, finaliza indicando ARB_OPERACION_INVALIDA.
+Crea la raï¿½z de A.
+Si A no es vacï¿½o, finaliza indicando ARB_OPERACION_INVALIDA.
 **/
 extern void crear_raiz(tArbol a, tElemento e);
 
 /**
- Inserta y retorna un nuevo nodo en A.
- El nuevo nodo se agrega en A como hijo de NP, hermano izquierdo de NH, y cuyo rótulo es E.
- Si NH es NULL, el nuevo nodo se agrega como último hijo de NP.
+ Inserta y retzorna un nuevo nodo en A.
+ El nuevo nodo se agrega en A como hijo de NP, hermano izquierdo de NH, y cuyo rï¿½tulo es E.
+ Si NH es NULL, el nuevo nodo se agrega como ï¿½ltimo hijo de NP.
  Si NH no corresponde a un nodo hijo de NP, finaliza indicando ARB_POSICION_INVALIDA.
  NP direcciona al nodo padre, mientras NH al nodo hermano derecho del nuevo nodo a insertar.
 **/
@@ -44,16 +44,16 @@ extern tNodo a_insertar(tArbol a, tNodo np, tNodo nh, tElemento e);
 
 /**
  Elimina el nodo N de A.
- El elemento almacenado en el árbol es eliminado mediante la función fEliminar parametrizada.
- Si N es la raíz de A, y tiene un sólo hijo, este pasa a ser la nueva raíz del árbol.
- Si N es la raíz de A, y a su vez tiene más de un hijo, finaliza retornando ARB_OPERACION_INVALIDA.
- Si N no es la raíz de A y tiene hijos, estos pasan a ser hijos del padre de N, en el mismo orden y a partir de la posición que ocupa N en la lista de hijos de su padre.
+ El elemento almacenado en el ï¿½rbol es eliminado mediante la funciï¿½n fEliminar parametrizada.
+ Si N es la raï¿½z de A, y tiene un sï¿½lo hijo, este pasa a ser la nueva raï¿½z del ï¿½rbol.
+ Si N es la raï¿½z de A, y a su vez tiene mï¿½s de un hijo, finaliza retornando ARB_OPERACION_INVALIDA.
+ Si N no es la raï¿½z de A y tiene hijos, estos pasan a ser hijos del padre de N, en el mismo orden y a partir de la posiciï¿½n que ocupa N en la lista de hijos de su padre.
 **/
 extern void a_eliminar(tArbol a, tNodo n, void (*fEliminar)(tElemento));
 
 /**
- Destruye el árbol A, eliminando cada uno de sus nodos.
- Los elementos almacenados en el árbol son eliminados mediante la función fEliminar parametrizada.
+ Destruye el ï¿½rbol A, eliminando cada uno de sus nodos.
+ Los elementos almacenados en el ï¿½rbol son eliminados mediante la funciï¿½n fEliminar parametrizada.
 **/
 extern void a_destruir(tArbol * a, void (*fEliminar)(tElemento));
 
@@ -63,7 +63,7 @@ Recupera y retorna el elemento del nodo N.
 extern tElemento a_recuperar(tArbol a, tNodo n);
 
 /**
-Recupera y retorna el nodo correspondiente a la raíz de A.
+Recupera y retorna el nodo correspondiente a la raï¿½z de A.
 **/
 extern tNodo a_raiz(tArbol a);
 
@@ -73,8 +73,8 @@ extern tNodo a_raiz(tArbol a);
 extern tLista a_hijos(tArbol a, tNodo n);
 
 /**
- Inicializa un nuevo árbol en *SA.
- El nuevo árbol en *SA se compone de los nodos del subárbol de A a partir de N.
+ Inicializa un nuevo ï¿½rbol en *SA.
+ El nuevo ï¿½rbol en *SA se compone de los nodos del subï¿½rbol de A a partir de N.
  El subarbol de A a partir de N debe ser eliminado de A.
 **/
 extern void a_sub_arbol(tArbol a, tNodo n, tArbol * sa);
