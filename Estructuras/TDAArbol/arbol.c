@@ -14,17 +14,17 @@ void crear_raiz(tArbol arbol, tElemento e)
 {
     tNodo nodo_raiz = arbol->raiz;
 
-    if (nodo_raiz != NULL)
+    if (nodo_raiz != NULL)                              //Chequear excepcion
         exit(ARB_OPERACION_INVALIDA);
 
-    nodo_raiz = (tNodo) malloc(sizeof(struct nodo));
+    nodo_raiz = (tNodo) malloc(sizeof(struct nodo));    //Crear nodo nuevo
 
-    if (nodo_raiz == NULL)
+    if (nodo_raiz == NULL)                              //Chequear memoria
         exit(ARB_ERROR_MEMORIA);
 
-    nodo_raiz->elemento = e;
-    nodo_raiz->padre    = NULL;
-    crear_lista(&(nodo_raiz->hijos));
+    nodo_raiz->elemento = e;                            //Setear elemento
+    nodo_raiz->padre    = NULL;                         //Setear como 'raiz'
+    crear_lista(&(nodo_raiz->hijos));                   //Inicializar lista de hijos
 }
 
 tNodo a_insertar(tArbol arbol, tNodo nodo_padre, tNodo nodo_hermano, tElemento e)
@@ -42,8 +42,8 @@ tNodo a_insertar(tArbol arbol, tNodo nodo_padre, tNodo nodo_hermano, tElemento e
     crear_lista(&lista_hijos_nn);                           //Inicializar lista de hijos
     nodo_nuevo->hijos = lista_hijos_nn;                     //Setear lista de hijos
     
-
-
+    l_insertar(nodo_padre->hijos,nodo_hermano,e);           //Preguntar
+    return nodo_nuevo;
 }
 
 void a_eliminar(tArbol arbol, tNodo nodo, void (*fEliminar)(tElemento))
