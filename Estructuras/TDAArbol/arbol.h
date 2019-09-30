@@ -34,7 +34,7 @@ Si A no es vac�o, finaliza indicando ARB_OPERACION_INVALIDA.
 extern void crear_raiz(tArbol a, tElemento e);
 
 /**
- Inserta y retzorna un nuevo nodo en A.
+ Inserta y retorna un nuevo nodo en A.
  El nuevo nodo se agrega en A como hijo de NP, hermano izquierdo de NH, y cuyo r�tulo es E.
  Si NH es NULL, el nuevo nodo se agrega como �ltimo hijo de NP.
  Si NH no corresponde a un nodo hijo de NP, finaliza indicando ARB_POSICION_INVALIDA.
