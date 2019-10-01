@@ -41,7 +41,7 @@ tNodo a_insertar(tArbol arbol, tNodo nodo_padre, tNodo nodo_hermano, tElemento e
     tLista lista_hijos_nn;
     crear_lista(&lista_hijos_nn);                           //Inicializar lista de hijos
     nodo_nuevo->hijos = lista_hijos_nn;                     //Setear lista de hijos
-    
+
     l_insertar(nodo_padre->hijos,nodo_hermano,e);           //Preguntar
     return nodo_nuevo;
 }
@@ -65,11 +65,8 @@ void a_eliminar(tArbol arbol, tNodo nodo, void (*fEliminar)(tElemento))
     if ((nodo != arbol->raiz) && (cant_hijos > 1))
     {
         tNodo padre = nodo->padre;
-        
+
     }
-    
-    
-    
 }
 
 tElemento a_recuperar(tArbol arbol, tNodo nodo)
@@ -85,4 +82,32 @@ tNodo a_raiz(tArbol arbol)
 tLista a_hijos(tArbol arbol, tNodo nodo)
 {
     return nodo->hijos;
+}
+
+/**
+ Destruye el �rbol A, eliminando cada uno de sus nodos.
+ Los elementos almacenados en el �rbol son eliminados mediante la funci�n fEliminar parametrizada.
+**/
+void a_destruir(tArbol * a, void (*fEliminar)(tElemento)){
+    tNodo nodo_aux= *a->raiz;
+
+    if(nodo_aux!=null){
+        posOrdenREC(OrdenRec(*a, fEliminar, nodo_aux));
+    }
+    nodo_aux= NULL //raiz
+    free(nodo_aux);
+    a=NULL;
+}
+
+void posOrdenREC(tArbol *a, void (*fEliminar(tElemento)), tNodo nodo){
+
+     for( tPosicion pos= l_primera(*nodo->hijosT); pos != NULL; pos = l_siguiente(*nodo->hijosT,pos)){
+        posOrdenREC(*a,*fEliminar, (tNodo) l_recuperar(*nodo->hijosT, pos));
+     }
+
+    fEliminar(nodo->elemento); //elimino el elemento de la lista
+    nodo->padre = NULL;
+    l_destruir(nodo->hijos, fEliminar); //destruiyo la lista de hijos
+    free(nodo);
+    nodo = NULL;
 }
