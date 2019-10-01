@@ -31,6 +31,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Estructuras/TDAArbol/ArbolTest.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Estructuras/TDAArbol/arbol.c">
 			<Option compilerVar="CC" />
 		</Unit>

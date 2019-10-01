@@ -107,7 +107,23 @@ void posOrdenREC(tArbol *a, void (*fEliminar(tElemento)), tNodo nodo){
 
     fEliminar(nodo->elemento); //elimino el elemento de la lista
     nodo->padre = NULL;
-    l_destruir(nodo->hijos, fEliminar); //destruiyo la lista de hijos
+    l_destruir(nodo->hijos, fEliminar); //destruyo la lista de hijos
     free(nodo);
     nodo = NULL;
 }
+
+/**
+ Inicializa un nuevo �rbol en *SA.
+ El nuevo �rbol en *SA se compone de los nodos del sub�rbol de A a partir de N.
+ El subarbol de A a partir de N debe ser eliminado de A.
+**/
+void a_sub_arbol(tArbol a, tNodo n, tArbol * sa){
+
+    (*sa) = (tArbol) malloc(sizeof(struct arbol));
+    if (sa == NULL)
+        exit(ARB_ERROR_MEMORIA);
+
+    sa->raiz = n->elemento;
+
+
+        }
