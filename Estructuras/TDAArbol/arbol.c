@@ -3,8 +3,9 @@
 
 //void fEliminar(tElemento e);
 
-void (*fEliminarNodo)(tElemento) // declaracion de un puntero a funcion.
+void (*fEliminarNodo)(tElemento); // declaracion de un puntero a funcion.
 void eliminarNodos(tElemento n);
+tNodo crear_Nodo(tNodo padre, tElemento e);
 
 tPosicion buscar_nodo_hermano(tLista lista, tNodo nodo)
 {
@@ -44,28 +45,21 @@ void crear_raiz(tArbol arbol, tElemento e)
 
 tNodo a_insertar(tArbol arbol, tNodo nodo_padre, tNodo nodo_hermano, tElemento e)
 {
-    if (nodo_hermano->padre != nodo_padre)                  //Chequear NH tiene como padre a NP
-        exit(ARB_POSICION_INVALIDA);
-
-    tNodo nodo_nuevo = (tNodo) malloc(sizeof(struct nodo)); //Nodo a crear
-    if (nodo_nuevo == NULL)
-        exit(ARB_ERROR_MEMORIA);
-
-    nodo_nuevo->elemento    = e;                            //Setear elemento
-    nodo_nuevo->padre       = nodo_padre;                   //Setear padre
-    tLista lista_hijos_nn;
-    crear_lista(&lista_hijos_nn);                           //Inicializar lista de hijos
-    nodo_nuevo->hijos = lista_hijos_nn;                     //Setear lista de hijos
-    
+    tNodo nodo_nuevo;
     tLista hijos_padre = nodo_padre->hijos;
-    if (nodo_hermano == NULL)
+    if (nodo_hermano != NULL)
     {
-        l_insertar(hijos_padre,l_fin(hijos_padre),nodo_nuevo);
+        if (nodo_hermano->padre != nodo_padre)
+            exit(ARB_POSICION_INVALIDA);
+        
+        nodo_nuevo = crear_Nodo(nodo_padre,e);
+        tPosicion posicion_hermano = buscar_posicion_hermano(hijos_padre,nodo_hermano);
+        l_insertar(hijos_padre,posicion_hermano,nodo_nuevo);
     }
     else
     {
-        tPosicion posicion_hermano = buscar_posicion_hermano(hijos_padre,nodo_hermano);
-        l_insertar(hijos_padre,posicion_hermano,nodo_nuevo);
+        nodo_nuevo = crear_Nodo(nodo_padre,e);
+        l_insertar(hijos_padre,l_fin(hijos_padre),nodo_nuevo);
     }
 
     return nodo_nuevo;
@@ -147,4 +141,19 @@ void eliminarNodos(tElemento n){
     fEliminarNodo(nodo);
     nodo->padre= NULL;
     free(nodo);
+}
+
+tNodo crear_Nodo(tNodo padre, tElemento e)
+{
+    tNodo nodo_nuevo = (tNodo) malloc(sizeof(struct nodo));                 //Nodo a crear
+    if (nodo_nuevo == NULL)
+        exit(ARB_ERROR_MEMORIA);
+
+    nodo_nuevo->elemento    = e;                                            //Setear elemento
+    nodo_nuevo->padre       = padre;                                        //Setear padre
+    tLista lista_hijos_nn;
+    crear_lista(&lista_hijos_nn);                                           //Inicializar lista de hijos
+    nodo_nuevo->hijos = lista_hijos_nn;                                     //Setear lista de hijos
+
+    return nodo_nuevo;
 }
