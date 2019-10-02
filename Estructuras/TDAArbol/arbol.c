@@ -1,12 +1,15 @@
 #include "arbol.h"
 #include <stdlib.h>
 
-void fEliminar(tElemento e);
+//void fEliminar(tElemento e);
+
+void (*fEliminarNodo)(tElemento) // declaracion de un puntero a funcion.
+void eliminarNodos(tElemento n);
 
 void crear_arbol(tArbol * arbol)
 {
     (*arbol) = (tArbol) malloc(sizeof(struct arbol));
-    if (arbol == NULL)
+    if (*arbol == NULL)
         exit(ARB_ERROR_MEMORIA);
 }
 
@@ -90,27 +93,15 @@ tLista a_hijos(tArbol arbol, tNodo nodo)
 **/
 void a_destruir(tArbol * a, void (*fEliminar)(tElemento)){
     tNodo nodo_aux= *a->raiz;
-
-    if(nodo_aux!=null){
-        posOrdenREC(OrdenRec(*a, fEliminar, nodo_aux));
-    }
-    nodo_aux= NULL //raiz
+    // Caso base: Solo raiz.
+    l_destruir(&nodo_aux->hijos,&eliminarNodos); //elimino los hijos
+    fEliminar(nodo_aux->elemento);
     free(nodo_aux);
+    *a->raiz=NULL;
+    free(a);
     a=NULL;
 }
 
-void posOrdenREC(tArbol *a, void (*fEliminar(tElemento)), tNodo nodo){
-
-     for( tPosicion pos= l_primera(*nodo->hijosT); pos != NULL; pos = l_siguiente(*nodo->hijosT,pos)){
-        posOrdenREC(*a,*fEliminar, (tNodo) l_recuperar(*nodo->hijosT, pos));
-     }
-
-    fEliminar(nodo->elemento); //elimino el elemento de la lista
-    nodo->padre = NULL;
-    l_destruir(nodo->hijos, fEliminar); //destruyo la lista de hijos
-    free(nodo);
-    nodo = NULL;
-}
 
 /**
  Inicializa un nuevo �rbol en *SA.
@@ -120,10 +111,18 @@ void posOrdenREC(tArbol *a, void (*fEliminar(tElemento)), tNodo nodo){
 void a_sub_arbol(tArbol a, tNodo n, tArbol * sa){
 
     (*sa) = (tArbol) malloc(sizeof(struct arbol));
-    if (sa == NULL)
+    if (*sa == NULL)
         exit(ARB_ERROR_MEMORIA);
 
     sa->raiz = n->elemento;
 
 
         }
+void eliminarNodos(tElemento n){
+
+    tNodo  nodo= (tNodo) n;
+    l_destruir(&nodo->hijos, &eliminarNodos); //& porque le paso un puntero, NO una lista.
+    fEliminarNodo(nodo);
+    nodo->padre= NULL;
+    free(nodo);
+}
