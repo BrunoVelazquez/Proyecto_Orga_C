@@ -6,6 +6,18 @@
 void (*fEliminarNodo)(tElemento) // declaracion de un puntero a funcion.
 void eliminarNodos(tElemento n);
 
+tPosicion buscar_nodo_hermano(tLista lista, tNodo nodo)
+{
+    tPosicion posicion_a_retornar = l_primera(lista);
+    tPosicion pos_fin = l_fin(lista);
+
+    while ((posicion_a_retornar != pos_fin) && (l_recuperar(lista,posicion_a_retornar) != nodo))
+    {
+        posicion_a_retornar = l_siguiente(lista,posicion_a_retornar);
+    }
+    return posicion_a_retornar;
+}
+
 void crear_arbol(tArbol * arbol)
 {
     (*arbol) = (tArbol) malloc(sizeof(struct arbol));
@@ -44,8 +56,18 @@ tNodo a_insertar(tArbol arbol, tNodo nodo_padre, tNodo nodo_hermano, tElemento e
     tLista lista_hijos_nn;
     crear_lista(&lista_hijos_nn);                           //Inicializar lista de hijos
     nodo_nuevo->hijos = lista_hijos_nn;                     //Setear lista de hijos
+    
+    tLista hijos_padre = nodo_padre->hijos;
+    if (nodo_hermano == NULL)
+    {
+        l_insertar(hijos_padre,l_fin(hijos_padre),nodo_nuevo);
+    }
+    else
+    {
+        tPosicion posicion_hermano = buscar_posicion_hermano(hijos_padre,nodo_hermano);
+        l_insertar(hijos_padre,posicion_hermano,nodo_nuevo);
+    }
 
-    l_insertar(nodo_padre->hijos,nodo_hermano,e);           //Preguntar
     return nodo_nuevo;
 }
 
