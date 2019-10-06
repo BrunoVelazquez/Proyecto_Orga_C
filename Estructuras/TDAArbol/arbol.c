@@ -1,7 +1,7 @@
 #include "arbol.h"
 #include <stdlib.h>
 
-//void fEliminar(tElemento e);
+void fEliminar(tElemento e);
 
 void (*fEliminarNodo)(tElemento); // declaracion de un puntero a funcion.
 void eliminarNodos(tElemento n);
@@ -74,7 +74,8 @@ void a_eliminar(tArbol arbol, tNodo nodo, void (*fEliminar)(tElemento))
 
     if ((nodo == arbol->raiz) && (cant_hijos == 1))
     {
-        tNodo nueva_raiz = l_primera(nodo->hijos);
+        tNodo nueva_raiz = (tNodo) l_recuperar(nodo->hijos,l_primera(nodo->hijos));
+        
         fEliminar(nodo->elemento);
         free(nodo);
         nodo = NULL;
