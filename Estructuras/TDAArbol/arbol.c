@@ -51,7 +51,7 @@ tNodo a_insertar(tArbol arbol, tNodo nodo_padre, tNodo nodo_hermano, tElemento e
     {
         if (nodo_hermano->padre != nodo_padre)
             exit(ARB_POSICION_INVALIDA);
-        
+
         nodo_nuevo = crear_Nodo(nodo_padre,e);
         tPosicion posicion_hermano = buscar_posicion_hermano(hijos_padre,nodo_hermano);
         l_insertar(hijos_padre,posicion_hermano,nodo_nuevo);
@@ -131,12 +131,29 @@ void a_sub_arbol(tArbol a, tNodo n, tArbol * sa){
         exit(ARB_ERROR_MEMORIA);
 
     sa->raiz = n->elemento;
+    subArbol_rec( &a, n, &sa, sa->raiz );
+
 
 
         }
+
+void subArbol_rec(tArbol a,tNodo nodoA, tAtbol *sa, tNodo nodoSA, ){
+
+    for(tPosicion * posA = nodoA->hijos; posA!= NULL; posA= l_siguiente(nodoA->hijos,posA){ //recorro la lista de hijos del nodo de A
+    l_insertar(nodoSA->hijos,l_fin(nodoSA->hijos) , posA->elemento);
+
+    tElemento ultimo= l_ultima(nodoSA->hijos)->elemento;
+    tNodo ul= (tNodo) ultimo;
+
+    subArbol_rec(a,posA, sa,posA->elemento);
+    }
+
+}
+
 void eliminarNodos(tElemento n){
 
     tNodo  nodo= (tNodo) n;
+
     l_destruir(&nodo->hijos, &eliminarNodos); //& porque le paso un puntero, NO una lista.
     fEliminarNodo(nodo);
     nodo->padre= NULL;
