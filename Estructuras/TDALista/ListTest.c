@@ -7,7 +7,7 @@
 //#define DEBUG_SIGUIENTE
 //#define DEBUG_ANTERIOR
 
-void l_imprimir(tLista lista)
+/*void l_imprimir(tLista lista)
 {
     tPosicion cursor = l_primera(lista);
     printf("Lista completa: ");
@@ -57,3 +57,4 @@ int main() //TEST
     l_destruir(&lista,&fEliminar);
     return 0;
 }
+*/
