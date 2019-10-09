@@ -1,4 +1,4 @@
-#include "lista.h"
+/*#include "lista.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -7,7 +7,7 @@
 //#define DEBUG_SIGUIENTE
 //#define DEBUG_ANTERIOR
 
-/*void l_imprimir(tLista lista)
+void l_imprimir(tLista lista)
 {
     tPosicion cursor = l_primera(lista);
     printf("Lista completa: ");
