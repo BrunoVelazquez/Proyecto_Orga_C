@@ -1,7 +1,6 @@
 #include "lista.h"
 #include <stdlib.h>
 
-void fEliminar(tElemento e);
 void destruirREC(tPosicion pos, void(*fEliminar)(tElemento));
 
 void crear_lista(tLista* lista)

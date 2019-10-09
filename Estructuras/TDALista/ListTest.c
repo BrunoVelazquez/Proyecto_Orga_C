@@ -1,4 +1,4 @@
-#include "lista.h"
+/*#include "lista.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -57,3 +57,4 @@ int main() //TEST
     l_destruir(&lista,&fEliminar);
     return 0;
 }
+*/
