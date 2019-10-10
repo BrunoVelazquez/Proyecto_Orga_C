@@ -8,7 +8,7 @@
 //#define DEBUG_INSERTAR
 //#define DEBUG_ELIMINAR
 //#define DEBUG_SUBARBOL
-#define DEBUG_ELIMINAR_NORAIZ
+//#define DEBUG_ELIMINAR_NORAIZ
 
 #ifdef DEBUG_MAIN_ARBOL
 void fEliminar(tElemento e)
@@ -56,18 +56,6 @@ void imprimir_Arbol (tArbol arbol){
     printf("--------------\n");
 }
 
-void imprimirRec(tArbol a,tNodo nod, tLista lista){
-
-    tPosicion posLista= l_primera(lista);
-    while (posLista!=NULL){
-    tElemento elem= l_recuperar(lista,posLista);
-    tNodo nodoArbol=(tNodo) elem;
-    printf(nodoArbol->elemento,"  ", (nodoArbol->padre)->elemento);
-    }
-
-    imprimirRec(a,nodoArbol, nodoArbol->)
- )
-}
 //tkm
 //same
 

@@ -16,12 +16,10 @@ void crear_arbol(tArbol * arbol)
 
 void crear_raiz(tArbol arbol, tElemento e)
 {
-
     if (arbol->raiz != NULL)                            //Chequear excepcion
         exit(ARB_OPERACION_INVALIDA);
 
     arbol->raiz = crear_Nodo(NULL,e);                   //Crear nodo raiz
-
 }
 
 tNodo a_insertar(tArbol arbol, tNodo nodo_padre, tNodo nodo_hermano, tElemento e)
@@ -105,7 +103,8 @@ tLista a_hijos(tArbol arbol, tNodo nodo)
     return nodo->hijos;
 }
 
-void a_destruir(tArbol * arbol, void (*fEliminar)(tElemento)){
+void a_destruir(tArbol * arbol, void (*fEliminar)(tElemento))
+{
     tNodo nodo_aux= (*arbol)->raiz;
 
     fEliminarElementoNodo = fEliminar;
@@ -117,8 +116,8 @@ void a_destruir(tArbol * arbol, void (*fEliminar)(tElemento)){
 }
 
 
-void a_sub_arbol(tArbol arbol, tNodo nodo, tArbol * sa){
-
+void a_sub_arbol(tArbol arbol, tNodo nodo, tArbol * sa)
+{
     (*sa) = (tArbol) malloc(sizeof(struct arbol));                      //Crear subarbol
     if (*sa == NULL)
         exit(ARB_ERROR_MEMORIA);
@@ -144,8 +143,8 @@ void a_sub_arbol(tArbol arbol, tNodo nodo, tArbol * sa){
  *
  */
 
-void eliminarNodo(tElemento n){
-
+void eliminarNodo(tElemento n)
+{
     tNodo  nodo= (tNodo) n;
 
     l_destruir(&nodo->hijos, &eliminarNodo);    //Destruir lista de hijos del nodo
