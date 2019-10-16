@@ -7,6 +7,8 @@ void fEliminarListaNodos(tElemento e){}
 tNodo crear_Nodo(tNodo padre, tElemento e);
 tPosicion buscar_posicion_nodo(tNodo nodo);
 
+
+
 void crear_arbol(tArbol * arbol)
 {
     (*arbol) = (tArbol) malloc(sizeof(struct arbol));
@@ -24,20 +26,20 @@ void crear_raiz(tArbol arbol, tElemento e)
 
 tNodo a_insertar(tArbol arbol, tNodo nodo_padre, tNodo nodo_hermano, tElemento e)
 {
-    tNodo nodo_nuevo;
+    tNodo nodo_nuevo = crear_Nodo(nodo_padre,e);                              //Crear nuevo nodo;
     tLista hijos_padre = nodo_padre->hijos;
     if (nodo_hermano != NULL)                                       //Si nodo_hermano no es nulo
     {
         if (nodo_hermano->padre != nodo_padre)                              //Chequear excepcion
             exit(ARB_POSICION_INVALIDA);
 
-        nodo_nuevo = crear_Nodo(nodo_padre,e);                              //Crear nuevo nodo
+     //   nodo_nuevo =
         tPosicion posicion_hermano = buscar_posicion_nodo(nodo_hermano);    //Buscar posicion de hermano en la lista
         l_insertar(hijos_padre,posicion_hermano,nodo_nuevo);                //Insertar nodo como rotulo de la lista como hermano izquierdo
     }
     else                                                            //De lo contrario (nodo_hermano es nulo)
     {
-        nodo_nuevo = crear_Nodo(nodo_padre,e);                              //Crear nuevo nodo
+       // nodo_nuevo = crear_Nodo(nodo_padre,e);                              //Crear nuevo nodo
         l_insertar(hijos_padre,l_fin(hijos_padre),nodo_nuevo);              //Insertar nodo como rotulo de la lista al final
     }
 
@@ -71,7 +73,7 @@ void a_eliminar(tArbol arbol, tNodo nodo, void (*fEliminar)(tElemento))
         while (cursor != fin)                                                   //Sube la los hijos del nodo a eliminar como hijos del padre
         {                                                                       //del nodo a eliminar
             tNodo nodo_hijo = l_recuperar(nodo->hijos,cursor);
-            nodo_hijo->padre = nodo->padre;
+            nodo_hijo->padre = nodo->padre;                                     //Chequear eliminacion de lita de hijos de nodo a eliminar
             l_insertar(hermanos,pos_nodo_a_eliminar, nodo_hijo);
             pos_nodo_a_eliminar = l_siguiente(hermanos,pos_nodo_a_eliminar);
             cursor = l_siguiente(nodo->hijos,cursor);
@@ -80,8 +82,8 @@ void a_eliminar(tArbol arbol, tNodo nodo, void (*fEliminar)(tElemento))
     }
 
     fEliminar(nodo->elemento);                                                  //Eliminar nodo
-    l_destruir(&nodo->hijos,&fEliminarListaNodos);
-    nodo->padre     = NULL;
+    l_destruir(&nodo->hijos,&fEliminarListaNodos);                              //Chequear eliminacion de nodo y rotulo para minmax
+    nodo->padre     = NULL;                                                     //Chequear no perder elemento
     nodo->elemento  = NULL;
     free(nodo);
     nodo = NULL;
