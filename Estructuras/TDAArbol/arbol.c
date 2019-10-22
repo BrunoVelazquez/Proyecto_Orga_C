@@ -143,19 +143,6 @@ void a_sub_arbol(tArbol arbol, tNodo nodo, tArbol * sa){
     l_eliminar(hermanos,posicion_nodo_subraiz,&fEliminarListaNodos);
 
 }
-/*
-void subArbol_rec(tArbol arbol,tNodo nodoA, tArbol *sa, tNodo nodoSA ){
-
-    for(tPosicion * posA = nodoA->hijos; posA!= NULL; posA= l_siguiente(nodoA->hijos,posA)){ //recorro la lista_hijos de hijos del nodo de A
-    l_insertar(nodoSA->hijos,l_fin(nodoSA->hijos) , posA->elemento);
-
-    tElemento ultimo= l_ultima(nodoSA->hijos)->elemento;
-    tNodo ul= (tNodo) ultimo;
-
-    subArbol_rec(arbol,posA, sa,posA->elemento);
-    }
-
-}*/
 
 void eliminarNodo(tElemento n){
 
