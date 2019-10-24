@@ -12,6 +12,12 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador);
 static void diferencia_estados(tEstado anterior, tEstado nuevo, int * x, int * y);
 static tEstado clonar_estado(tEstado e);
 
+/**
+ Inicializa la estructura correspondiente a una búsqueda adversaria, a partir del estado actual de la partida parametrizada.
+ Se asume la partida parametrizada con estado PART_EN_JUEGO.
+ Los datos del tablero de la partida parametrizada son clonados, por lo que P no se ve modificada.
+ Una vez esto, se genera el árbol de búsqueda adversaria siguiendo el algoritmo Min-Max con podas Alpha-Beta.
+**/
 void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
     int i, j;
     tEstado estado;
@@ -28,7 +34,7 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
             estado->grilla[i][j] = p->tablero->grilla[i][j];
         }
     }
-	
+
 	// Se asume que el estado de la partida es PART_EN_JUEGO por lo que, la utilidad del estado
 	// inicialmente es IA_NO_TERMINO
     estado->utilidad = IA_NO_TERMINO;
@@ -47,15 +53,27 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
     ejecutar_min_max((*b));
 }
 
-/** 
+/**
 >>>>>  A IMPLEMENTAR   <<<<<
 */
+/**
+ Computa y retorna el próximo movimiento a realizar por el jugador MAX.
+ Para esto, se tiene en cuenta el árbol creado por el algoritmo de búsqueda adversaria Min-max con podas Alpha-Beta.
+ Siempre que sea posible, se indicará un movimiento que permita que MAX gane la partida.
+ Si no existe un movimiento ganador para MAX, se indicará un movimiento que permita que MAX empate la partida.
+ En caso contrario, se indicará un movimiento que lleva a MAX a perder la partida.
+**/
 void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y){}
 
 /**
->>>>>  A IMPLEMENTAR   <<<<<
+>>>>>  A IMPLEMENTAR   <<<<< LISTOOOOOO
 **/
-void destruir_busqueda_adversaria(tBusquedaAdversaria * b){}
+void destruir_busqueda_adversaria(tBusquedaAdversaria * b){
+
+    b->jugador_max= -1;
+    b->jugador_min= -1;
+    a_destruir(&b->arbol_busqueda, &fEliminar);
+}
 
 // ===============================================================================================================
 // FUNCIONES Y PROCEDEMIENTOS AUXILIARES
@@ -93,27 +111,53 @@ Computa el valor de utilidad correspondiente al estado E, y la ficha correspondi
 - IA_PIERDE_MAX si el estado E refleja una jugada en el que el JUGADOR_MAX perdió la partida.
 - IA_NO_TERMINO en caso contrario.
 **/
-static int valor_utilidad(tEstado e, int jugador_max){}
+static int valor_utilidad(tEstado e, int jugador_max){
+
+
+}
 
 /**
->>>>>  A IMPLEMENTAR   <<<<<
+>>>>>  A IMPLEMENTAR   <<<<< LISTOOOO
 Computa y retorna una lista con aquellos estados que representan estados sucesores al estado E.
 Un estado sucesor corresponde a la clonación del estado E, junto con la incorporación de un nuevo movimiento
 realizado por el jugador cuya ficha es FICHA_JUGADOR por sobre una posición que se encuentra libre en el estado E.
-La lista de estados sucesores se debe ordenar de forma aleatoria, de forma tal que una doble invocación de la función 
+La lista de estados sucesores se debe ordenar de forma aleatoria, de forma tal que una doble invocación de la función
 estados_sucesores(estado, ficha) retornaría dos listas L1 y L2 tal que:
 - L1 y L2 tienen exactamente los mismos estados sucesores de ESTADO a partir de jugar FICHA.
 - El orden de los estado en L1 posiblemente sea diferente al orden de los estados en L2.
 **/
-static tLista estados_sucesores(tEstado e, int ficha_jugador){}
+static tLista estados_sucesores(tEstado e, int ficha_jugador){
+
+    tLista lista_con_sucesores;
+    crear_lista(&lista_con_sucesores);
+    tEstado estado_clon = clonar_estado(e);
+    estado_clon->grilla;
+
+    // deberia insertar en la lista
+    // al incorporar un nuevo movimiento, deberia modificar alguna posicion random de la grilla estado con
+    // el valor ficha jugador? luego recorrer toda la grilla
+
+}
 
 /**
 >>>>>  A IMPLEMENTAR   <<<<<
 Inicializa y retorna un nuevo estado que resulta de la clonación del estado E.
 Para esto copia en el estado a retornar los valores actuales de la grilla del estado E, como su valor
-de utilidad. 
+de utilidad.
 **/
-static tEstado clonar_estado(tEstado e){}
+static tEstado clonar_estado(tEstado e){
+
+    tEstado estado_clon = (tEstado) malloc(sizeof(struct estado));
+    estado_clon= e->utilidad;
+
+    for(i=0; i<3; i++){
+        for(j=0; j<3; j++){
+            e->grilla[i][j] = estado_clon->grilla[i][j];
+        }
+    }
+
+    return estado_clon;
+}
 
 /**
 Computa la diferencia existente entre dos estados.
