@@ -1,4 +1,4 @@
-#define DEBUG_MAIN_LISTA
+//#define DEBUG_MAIN_LISTA
 
 #include "lista.h"
 #include <stdio.h>
