@@ -49,6 +49,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="IA/ia.h" />
+		<Unit filename="Partida/partida.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Partida/partida.h" />
 		<Extensions>
 			<envvars />
