@@ -45,13 +45,13 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Estructuras/TDALista/lista.h" />
+		<Unit filename="Estructuras/TDAPartida/Partida.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="IA/ia.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="IA/ia.h" />
-		<Unit filename="Partida/partida.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Partida/partida.h" />
 		<Extensions>
 			<envvars />

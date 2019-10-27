@@ -67,6 +67,7 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y){}
 
 /**
 >>>>>  A IMPLEMENTAR   <<<<< LISTOOOOOO
+ Libera el espacio asociado a la estructura correspondiente para la búsqueda adversaria.
 **/
 void destruir_busqueda_adversaria(tBusquedaAdversaria * b){
 
@@ -113,11 +114,18 @@ Computa el valor de utilidad correspondiente al estado E, y la ficha correspondi
 **/
 static int valor_utilidad(tEstado e, int jugador_max){
 
+    int utilidad_estado= e->utilidad;
+    int ret;
+
+     //PREGUNTA!!!!!
+    if(jugador_max>0 && utilidad_estado>0) ret= IA_GANA_MAX;
+    else if(jugador_max==0 && utilidad_estado==0) ret= IA_EMPATA_MAX;
+
 
 }
 
 /**
->>>>>  A IMPLEMENTAR   <<<<< LISTOOOO
+>>>>>  A IMPLEMENTAR   <<<<<
 Computa y retorna una lista con aquellos estados que representan estados sucesores al estado E.
 Un estado sucesor corresponde a la clonación del estado E, junto con la incorporación de un nuevo movimiento
 realizado por el jugador cuya ficha es FICHA_JUGADOR por sobre una posición que se encuentra libre en el estado E.
@@ -133,6 +141,7 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador){
     tEstado estado_clon = clonar_estado(e);
     estado_clon->grilla;
 
+     // PREGUNTAR!!!!!!!!!!!1
     // deberia insertar en la lista
     // al incorporar un nuevo movimiento, deberia modificar alguna posicion random de la grilla estado con
     // el valor ficha jugador? luego recorrer toda la grilla
@@ -140,7 +149,7 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador){
 }
 
 /**
->>>>>  A IMPLEMENTAR   <<<<<
+>>>>>  A IMPLEMENTAR   <<<<< LISTOOOOOOO
 Inicializa y retorna un nuevo estado que resulta de la clonación del estado E.
 Para esto copia en el estado a retornar los valores actuales de la grilla del estado E, como su valor
 de utilidad.
