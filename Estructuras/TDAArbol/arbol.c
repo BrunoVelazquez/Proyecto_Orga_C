@@ -12,15 +12,17 @@ tPosicion buscar_posicion_nodo(tNodo nodo);
 void crear_arbol(tArbol * arbol)
 {
     (*arbol) = (tArbol) malloc(sizeof(struct arbol));
-    if (*arbol == NULL)                                 //Chequear excepcion
+    if (*arbol == NULL)       {                          //Chequear excepcion
         exit(ARB_ERROR_MEMORIA);
+    }
+    (*arbol)->raiz=NULL;
 }
 
 void crear_raiz(tArbol arbol, tElemento e)
 {
-    if (arbol->raiz != NULL)                            //Chequear excepcion
+    if (arbol->raiz != NULL){      //Chequear excepcion
         exit(ARB_OPERACION_INVALIDA);
-
+    }
     arbol->raiz = crear_Nodo(NULL,e);                   //Crear nodo raiz
 }
 

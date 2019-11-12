@@ -31,13 +31,16 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Estructuras/TDAArbol/ArbolTest.c">
+		<Unit filename="Estructuras/ProgramaPrincipal/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Estructuras/TDAArbol/arbol.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Estructuras/TDAArbol/arbol.h" />
+		<Unit filename="Estructuras/TDAIA/ia.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Estructuras/TDALista/ListTest.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -46,9 +49,6 @@
 		</Unit>
 		<Unit filename="Estructuras/TDALista/lista.h" />
 		<Unit filename="Estructuras/TDAPartida/Partida.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="IA/ia.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="IA/ia.h" />

@@ -28,7 +28,6 @@ void l_eliminar(tLista lista, tPosicion pos, void (*fEliminar)(tElemento))
 {
     if (pos->siguiente == NULL)
         exit(LST_POSICION_INVALIDA);
-
     fEliminar((pos->siguiente)->elemento);
     (pos->siguiente)->elemento = NULL;
     tPosicion pos_NULL = pos->siguiente;

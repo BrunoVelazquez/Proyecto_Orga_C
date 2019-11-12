@@ -423,3 +423,5 @@ static void diferencia_estados(tEstado anterior, tEstado nuevo, int * x, int * y
     }
 }
 
+
+

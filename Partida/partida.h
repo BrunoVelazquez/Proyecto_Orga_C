@@ -20,7 +20,7 @@
 #define PART_ERROR_MEMORIA                  113
 
 struct tablero{
-    int grilla [3][3];
+    int grilla[3][3];
 };
 
 struct partida{
@@ -28,8 +28,8 @@ struct partida{
     int turno_de;
     int estado;
     struct tablero * tablero;
-    char nombre_jugador_1 [50];
-    char nombre_jugador_2 [50];
+    char nombre_jugador_1[50];
+    char nombre_jugador_2[50];
 };
 
 typedef struct tablero * tTablero;
