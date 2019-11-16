@@ -29,9 +29,10 @@ void l_eliminar(tLista lista, tPosicion pos, void (*fEliminar)(tElemento))
     if (pos->siguiente == NULL)
         exit(LST_POSICION_INVALIDA);
     fEliminar((pos->siguiente)->elemento);
-    (pos->siguiente)->elemento = NULL;
     tPosicion pos_NULL = pos->siguiente;
-    pos->siguiente = (pos->siguiente)->siguiente;
+    pos->siguiente = pos_NULL->siguiente;
+    pos_NULL->elemento  = NULL;
+    pos_NULL->siguiente = NULL;
     free(pos_NULL);
 }
 
@@ -46,21 +47,20 @@ void l_destruir(tLista * lista, void (*fEliminar)(tElemento))
 
     centinela->siguiente = NULL;
     free(centinela);
-    lista= NULL;
+    *lista= NULL;
 }
 
 void destruirREC(tPosicion pos, void(*fEliminar)(tElemento))
 {
-    while (pos->siguiente != NULL)
+    if (pos->siguiente != NULL)
     {
         destruirREC(pos->siguiente, fEliminar);
-        pos->siguiente = NULL;
     }
 
     fEliminar(pos->elemento);
     pos->elemento  = NULL;
+    pos->siguiente = NULL;
     free(pos);
-    pos = NULL;
 }
 
 tElemento l_recuperar(tLista lista, tPosicion pos)
@@ -86,7 +86,7 @@ tPosicion l_siguiente(tLista lista, tPosicion pos)
 
 tPosicion l_anterior(tLista lista, tPosicion pos)
 {
-    if(pos == l_primera(lista))
+    if(pos == lista)
         exit(LST_NO_EXISTE_ANTERIOR);
 
     tPosicion celda_actual = lista;

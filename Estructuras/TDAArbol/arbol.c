@@ -7,8 +7,6 @@ void fEliminarListaNodos(tElemento e){}
 tNodo crear_Nodo(tNodo padre, tElemento e);
 tPosicion buscar_posicion_nodo(tNodo nodo);
 
-
-
 void crear_arbol(tArbol * arbol)
 {
     (*arbol) = (tArbol) malloc(sizeof(struct arbol));
@@ -63,6 +61,7 @@ void a_eliminar(tArbol arbol, tNodo nodo, void (*fEliminar)(tElemento))
             tNodo nueva_raiz = (tNodo) l_recuperar(nodo->hijos,l_primera(nodo->hijos)); //Setear unico hijo como nueva raiz
             nueva_raiz->padre = NULL;
             arbol->raiz = nueva_raiz;
+
         }
     }
     else                                                            //De lo contrario (No es la raiz)
@@ -72,6 +71,7 @@ void a_eliminar(tArbol arbol, tNodo nodo, void (*fEliminar)(tElemento))
 
         tPosicion cursor = l_primera(nodo->hijos);
         tPosicion fin = l_fin(nodo->hijos);
+
         while (cursor != fin)                                                   //Sube la los hijos del nodo a eliminar como hijos del padre
         {                                                                       //del nodo a eliminar
             tNodo nodo_hijo = l_recuperar(nodo->hijos,cursor);
@@ -81,6 +81,7 @@ void a_eliminar(tArbol arbol, tNodo nodo, void (*fEliminar)(tElemento))
             cursor = l_siguiente(nodo->hijos,cursor);
         }
         l_eliminar(hermanos,pos_nodo_a_eliminar,&fEliminarListaNodos);
+
     }
 
     fEliminar(nodo->elemento);                                                  //Eliminar nodo
@@ -88,7 +89,6 @@ void a_eliminar(tArbol arbol, tNodo nodo, void (*fEliminar)(tElemento))
     nodo->padre     = NULL;                                                     //Chequear no perder elemento
     nodo->elemento  = NULL;
     free(nodo);
-    nodo = NULL;
 
 }
 
@@ -116,7 +116,7 @@ void a_destruir(tArbol * arbol, void (*fEliminar)(tElemento))
     fEliminarElementoNodo = NULL;
     (*arbol)->raiz=NULL;
     free(*arbol);
-    arbol=NULL;
+    *arbol=NULL;
 }
 
 
