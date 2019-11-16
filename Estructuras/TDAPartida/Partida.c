@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 /**
 Inicializa una nueva partida, indicando:
  - Modo de partida (Usuario vs. Usuario o Usuario vs. Agente IA).
@@ -13,7 +14,7 @@ void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombr
 
     int i;
     int j;
-
+    int opcion_juego;
     tPartida p2 = malloc(sizeof(struct partida));
 
     if ((p2) == NULL){
@@ -22,8 +23,22 @@ void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombr
     }
     (p2)->modo_partida= modo_partida;
     (p2)->estado= PART_EN_JUEGO;
-    (p2)->turno_de=comienza;
 
+    if(comienza==PART_JUGADOR_RANDOM){
+        srand(time(NULL));
+        opcion_juego= rand()%2;
+
+                    if(opcion_juego==0){
+                    comienza=PART_JUGADOR_1;
+                    }
+                    else {
+                            if(opcion_juego==1){
+                            comienza=PART_JUGADOR_2;
+                            }
+                         }
+    }
+
+    (p2)->turno_de=comienza;
 
     (p2)->tablero= (tTablero) malloc(sizeof(struct tablero));
 
@@ -53,20 +68,26 @@ int nuevo_movimiento(tPartida p, int mov_x, int mov_y){
 
     int turno_de_jugador= p->turno_de;
     int ret=PART_MOVIMIENTO_OK;
+    int estado=p->estado;
 
-    if( (mov_x-1)<3 && (mov_y-1)<3 ){
+    if(estado!= PART_EMPATE && estado!= PART_GANA_JUGADOR_1 && estado!= PART_GANA_JUGADOR_2){
 
-        if( p->tablero->grilla[mov_x-1][mov_y-1] == PART_SIN_MOVIMIENTO){
+        if( (mov_x-1)<3 && (mov_y-1)<3 ){
 
-           (p->tablero->grilla)[mov_x-1][mov_y-1]=turno_de_jugador;
+            if( p->tablero->grilla[mov_x-1][mov_y-1] == PART_SIN_MOVIMIENTO){
+
+               (p->tablero->grilla)[mov_x-1][mov_y-1]=turno_de_jugador;
+            }
+            else {
+                    ret=PART_MOVIMIENTO_ERROR;
+                }
         }
-        else {
+        else{
                 ret=PART_MOVIMIENTO_ERROR;
             }
     }
-    else{
-            ret=PART_MOVIMIENTO_ERROR;
-        }
+    else ret= PART_MOVIMIENTO_ERROR;
+
     return ret;
 }
 
@@ -78,9 +99,6 @@ void finalizar_partida(tPartida * p){
     (*p)->estado=-1;
     (*p)->modo_partida=-1;
     (*p)->turno_de=-1;
-
-    free((*p)->nombre_jugador_1);
-    free((*p)->nombre_jugador_2);
 
     free((*p)->tablero);
     (*p)=NULL;

@@ -67,7 +67,7 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
 }
 
 /**
->>>>>  A IMPLEMENTAR   <<<<<   LISTO
+>>>>>  A IMPLEMENTAR   <<<<<   PREGUNTAR PORQUE ESTA PARCIALMENTE IMPLEMENTADO
 */
 /**
  Computa y retorna el próximo movimiento a realizar por el jugador MAX.
@@ -101,17 +101,17 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y){
         estado_de_nodo_hijo= nodo_de_lista->elemento;
         int utilidad_de_nodo= estado_de_nodo_hijo->utilidad;
 
-        if(utilidad_de_nodo==IA_GANA_MAX) corte=1; //1 GANA MAX
+        if(utilidad_de_nodo==IA_GANA_MAX) corte=1; //1 GANA MAX ENCONTRE EL PRIMER ESTADO DONDE GANA
         else{
 
                 if((utilidad_de_nodo==IA_EMPATA_MAX) && (corte_empata==0)) {
-                        estado_empata=estado_de_nodo_hijo; // EMPATA MAX
+                        estado_empata=estado_de_nodo_hijo; // ENCONTRE EL PRIMER ESTADO DONDE EMPATA MAX. LO GUARDO
                         corte_empata=1;
 
                 }
                 else{
                         if((utilidad_de_nodo==IA_PIERDE_MAX) && (corte_pierde==0)) {
-                                estado_pierde=estado_de_nodo_hijo;
+                                estado_pierde=estado_de_nodo_hijo; // ENCONTRE EL PRIMER ESTADO DONDE PIERDE MAX . LO GUARDO
                                 corte_pierde=1;
                             }
                     }
@@ -341,7 +341,7 @@ static int valor_utilidad(tEstado e, int jugador_max){
 }
 
 /**
->>>>>  A IMPLEMENTAR   <<<<<   LISTOOOO
+>>>>>  A IMPLEMENTAR   <<<<<   CORREGIDO
 Computa y retorna una lista con aquellos estados que representan estados sucesores al estado E.
 Un estado sucesor corresponde a la clonación del estado E, junto con la incorporación de un nuevo movimiento
 realizado por el jugador cuya ficha es FICHA_JUGADOR por sobre una posición que se encuentra libre en el estado E.
@@ -354,28 +354,28 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador){
 
     tLista lista_con_sucesores;
     crear_lista(&lista_con_sucesores);
-    tEstado estado_clon_auxiliar;
+    tEstado estado_clon;
 
     int fila=0;
     int columna=0;
-
-    estado_clon_auxiliar = clonar_estado(e);
+    int valor_grilla;
 
     srand(time(NULL));
 
     for(fila; fila<3;fila++){
         for(columna; columna<3; columna++){
 
-            int valor_grilla=estado_clon_auxiliar->grilla[fila][columna];
+            valor_grilla=e->grilla[fila][columna];
+
 
             if(valor_grilla==PART_SIN_MOVIMIENTO){ // Es una casilla libre
 
-                tEstado estado_clon= clonar_estado(e); //clono el estado original
+                estado_clon= clonar_estado(e); //clono el estado original
 
                 estado_clon->grilla[fila][columna]=ficha_jugador; // agrego la ficha del jugador al lugar correspondiente.
 
                    //numero random
-                int numero_random= rand()%1;
+                int numero_random= rand()%2;
                 if(numero_random==1) l_insertar(lista_con_sucesores,l_fin(lista_con_sucesores),estado_clon);
                 else l_insertar(lista_con_sucesores,l_primera(lista_con_sucesores),estado_clon);
 

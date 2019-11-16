@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 void imprimir_tablero(tPartida p){
 
@@ -250,23 +251,27 @@ int main(){
                   scanf("%s", Jugador_1);
                   strcpy(Jugador_2,"Agente IA");
         }
-        //caso RANDOM case 3
 
     }
     printf("------------------------\n");
     printf("\n Indice quien comenzara la partida: \n");
     printf("1 - %s\n",Jugador_1);
     printf("2 - %s\n",Jugador_2);
-    //printf("3 - Modo Aleatorio\n");
+    printf("3 - Modo Aleatorio\n");
     printf("Su opcion es: ");
     scanf("%d", &opcion_juego);
 
     if(opcion_juego==1){
         comienza=PART_JUGADOR_1;
         }
-    else comienza=PART_JUGADOR_2;
+    else {
+            if(opcion_juego==2){
+            comienza=PART_JUGADOR_2;
+            }
+            else { comienza= PART_JUGADOR_RANDOM;
+                 }
+    }
 
-        //caso RANDOM case 3
 
     if(modo_juego==1) {
 
