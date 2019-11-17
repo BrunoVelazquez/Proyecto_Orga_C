@@ -1,3 +1,5 @@
+#define MAIN_PRINCIPAL
+
 #include "partida.h"
 #include "lista.h"
 #include "arbol.h"
@@ -6,6 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
+#ifdef MAIN_PRINCIPAL
 
 void imprimir_tablero(tPartida p){
 
@@ -55,7 +59,6 @@ void solicitar_movimiento(tPartida p){
         jugada_realizada=nuevo_movimiento(p,x,y);
     }
 }
-
 
 int resultado_partida(tPartida p,int jugador){
 
@@ -260,3 +263,5 @@ int main(){
 
     return 0;
 }
+
+#endif // MAIN_PRINCIPAL

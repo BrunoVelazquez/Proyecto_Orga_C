@@ -17,43 +17,44 @@ void nueva_partida(tPartida * p, int modo_partida, int comienza, char * j1_nombr
     int opcion_juego;
     tPartida p2 = malloc(sizeof(struct partida));
 
-    if ((p2) == NULL){
-
+    if ((p2) == NULL)
         exit(PART_ERROR_MEMORIA);
-    }
+
     (p2)->modo_partida= modo_partida;
     (p2)->estado= PART_EN_JUEGO;
 
-    if(comienza==PART_JUGADOR_RANDOM){
+    if (comienza==PART_JUGADOR_RANDOM)
+    {
         srand(time(NULL));
         opcion_juego= rand()%2;
 
-                    if(opcion_juego==0){
-                    comienza=PART_JUGADOR_1;
-                    }
-                    else {
-                            if(opcion_juego==1){
-                            comienza=PART_JUGADOR_2;
-                            }
-                         }
+        if (!opcion_juego)
+        {
+            comienza=PART_JUGADOR_1;
+        }
+        else
+        {
+            comienza=PART_JUGADOR_2;
+        }
     }
 
     (p2)->turno_de=comienza;
 
     (p2)->tablero= (tTablero) malloc(sizeof(struct tablero));
 
-    if ( ((p2)->tablero) == NULL){
+    if ((p2)->tablero == NULL)
         exit(PART_ERROR_MEMORIA);
+
+
+    for (i = 0; i < 3 ; i++)
+    {
+        for(j = 0 ; j < 3 ; j++)
+        {
+            ((p2)->tablero->grilla)[i][j]=PART_SIN_MOVIMIENTO;
         }
+    }
 
-
-     for(i=0; i<3;i++){
-        for(j=0;j<3;j++){
-
-                ((p2)->tablero->grilla)[i][j]=PART_SIN_MOVIMIENTO;
-            }
-     }
-      strcpy((p2)->nombre_jugador_1,j1_nombre);
+    strcpy((p2)->nombre_jugador_1,j1_nombre);
     strcpy((p2)->nombre_jugador_2,j2_nombre);
     (*p) = p2;
 }
@@ -70,21 +71,28 @@ int nuevo_movimiento(tPartida p, int mov_x, int mov_y){
     int ret=PART_MOVIMIENTO_OK;
     int estado=p->estado;
 
-    if(estado!= PART_EMPATE && estado!= PART_GANA_JUGADOR_1 && estado!= PART_GANA_JUGADOR_2){
+    if (estado != PART_EMPATE &&
+        estado != PART_GANA_JUGADOR_1 &&
+        estado != PART_GANA_JUGADOR_2)
+    {
 
-        if( (mov_x-1)<3 && (mov_y-1)<3 ){
+        if ((mov_x-1) < 3 &&
+            (mov_y-1) < 3 )
+        {
 
-            if( p->tablero->grilla[mov_x-1][mov_y-1] == PART_SIN_MOVIMIENTO){
-
+            if( p->tablero->grilla[mov_x-1][mov_y-1] == PART_SIN_MOVIMIENTO)
+            {
                (p->tablero->grilla)[mov_x-1][mov_y-1]=turno_de_jugador;
             }
-            else {
-                    ret=PART_MOVIMIENTO_ERROR;
-                }
-        }
-        else{
+            else
+            {
                 ret=PART_MOVIMIENTO_ERROR;
             }
+        }
+        else
+        {
+            ret=PART_MOVIMIENTO_ERROR;
+        }
     }
     else ret= PART_MOVIMIENTO_ERROR;
 
@@ -94,7 +102,8 @@ int nuevo_movimiento(tPartida p, int mov_x, int mov_y){
 /**
 Finaliza la partida referenciada por P, liberando toda la memoria utilizada.
 **/
-void finalizar_partida(tPartida * p){
+void finalizar_partida(tPartida * p)
+{
 
     (*p)->estado=-1;
     (*p)->modo_partida=-1;
