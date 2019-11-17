@@ -178,14 +178,15 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
     tLista lista_sucesores;
     int longitud;
     int cursor;
+    int utilidad_del_estado;
     tEstado estadoN= (tEstado) a_recuperar(a,n);
 
 //
     if( valor_utilidad(estadoN, es_max)== (IA_NO_TERMINO)){ // Esta bien
-
+        printf("\n if de IA NO TERMINO %d",valor_utilidad(estadoN,es_max));
             if(es_max){
-                mejor_valor_sucesores= IA_INFINITO_NEG;
-
+                //mejor_valor_sucesores= IA_INFINITO_NEG;
+                printf("\n jugador es max");
                 corte=0;
                 lista_sucesores = estados_sucesores(estadoN,jugador_max);
                 longitud= l_longitud(lista_sucesores);
@@ -198,25 +199,23 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                     tNodo nodo_nuevo= a_insertar(a, n, NULL, estado_de_l);
 
                     tEstado estado_nuevo_nodo= nodo_nuevo->elemento;
-
+                    utilidad_del_estado= estado_nuevo_nodo->utilidad;
+                    printf("\n\n utilidad del nodo: %d",&utilidad_del_estado);
 
                     crear_sucesores_min_max(a,nodo_nuevo,0,alpha,beta,jugador_max,jugador_min);
 
-                    if(mejor_valor_sucesores<(estado_nuevo_nodo->utilidad)) mejor_valor_sucesores=estado_nuevo_nodo->utilidad;
+                    if(alpha<utilidad_del_estado) alpha=utilidad_del_estado;
 
-                    if(alpha<mejor_valor_sucesores){
-
-                            alpha= mejor_valor_sucesores;
-                    }
                     if(beta<=alpha) corte=1; // dejo de explorar la lista de sucesores. Podo.
 
                     cursor=cursor+1;
-                    estadoN->utilidad= mejor_valor_sucesores;
+                    estadoN->utilidad= alpha;
                 }
 
             }
             else{ //es jugador min.
-                    mejor_valor_sucesores= IA_INFINITO_POS;
+                    //mejor_valor_sucesores= IA_INFINITO_POS;
+                    printf("\n jugador es min");
                     corte=0;
                     lista_sucesores = estados_sucesores(estadoN,jugador_min);
                     longitud= l_longitud(lista_sucesores);
@@ -230,27 +229,22 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                         tEstado estado_nuevo_nodo= nodo_nuevo->elemento;
 
                         crear_sucesores_min_max(a,nodo_nuevo,1,alpha,beta,jugador_max,jugador_min);
+                        utilidad_del_estado= estado_nuevo_nodo->utilidad;
+                        printf("\n\n utilidad del nodo: %d",&utilidad_del_estado);
 
-                        if(mejor_valor_sucesores> (estado_nuevo_nodo->utilidad)) {
-                            mejor_valor_sucesores=estado_nuevo_nodo->utilidad;
-
-                        }
-
-                        if(beta>mejor_valor_sucesores) beta= mejor_valor_sucesores;
+                        if(beta> utilidad_del_estado) beta=utilidad_del_estado;
 
                         if(beta <= alpha) corte=1;
 
                         cursor=cursor+1;
-                         //estadoN->utilidad= estado_nuevo_nodo->utilidad;
+                        estadoN->utilidad=beta;
                     }
-
-                    estadoN->utilidad= mejor_valor_sucesores;
 
                 }
 
     }
     else  {
-
+            printf("\nELSE de IA NO TERMINO %d",valor_utilidad(estadoN,es_max));
             estadoN->utilidad= valor_utilidad(estadoN,es_max);
         l_destruir(&lista_sucesores,&fEliminar);
     }

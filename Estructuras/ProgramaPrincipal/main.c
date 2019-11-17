@@ -56,58 +56,55 @@ void solicitar_movimiento(tPartida p){
     }
 }
 
-int resultado_partida(tPartida p, int jugador){
+
+int resultado_partida(tPartida p,int jugador){
+
+int retornar=0;
 
 
-    int ret=PART_EMPATE;
-    int no_encontre_resultado=1;
+int no_encontre_resultado=1;
+printf("\n\n print no encontre resultado %d",&no_encontre_resultado);
 
-     if(no_encontre_resultado==1){
-     if( ( p->tablero->grilla[0][0])!=PART_SIN_MOVIMIENTO){
-            //printf(" de casilla %d",p->tablero->grilla[0][0]);
-          if (( p->tablero->grilla[0][0]  ==  p->tablero->grilla[0][1] ==  p->tablero->grilla[0][2]) || ( p->tablero->grilla[0][0] == p->tablero->grilla[1][0] == p->tablero->grilla[2][0]) || (  p->tablero->grilla[0][0] == p->tablero->grilla[1][1] == p->tablero->grilla[2][2])){
-                     printf("adentro resultado part IF");
-                if((  p->tablero->grilla[0][0]) == jugador) {
-                        ret=1;
-                        no_encontre_resultado=0;
-                        printf("GANEE");
-                }
+if(no_encontre_resultado==1){
 
-            }
-        }
-     }//fin no encontre resultado.
+	if(p->tablero->grilla[0][0]!= PART_SIN_MOVIMIENTO){
 
-     if(no_encontre_resultado==1){
+		if( (p->tablero->grilla[0][0] == p->tablero->grilla[0][1] == p->tablero->grilla[0][2]) || (p->tablero->grilla[0][0] == p->tablero->grilla[1][0] == p->tablero->grilla[2][0]) || (p->tablero->grilla[0][0] == p->tablero->grilla[1][1] == p->tablero->grilla[2][2]) ) {
+			if( p->tablero->grilla[0][0] == jugador) {
+				retornar=1;
+				no_encontre_resultado=0;
+				}
+			}
+		}
+}
 
-     if(( p->tablero->grilla[1][1])!=PART_SIN_MOVIMIENTO){
+if(no_encontre_resultado==1){
 
-            if ((( p->tablero->grilla[1][0]) == ( p->tablero->grilla[1][1]) == ( p->tablero->grilla[1][2])) || (( p->tablero->grilla[0][1]) == ( p->tablero->grilla[1][1]) == ( p->tablero->grilla[2][1])) || (( p->tablero->grilla[2][0]) ==( p->tablero->grilla[1][1]) == ( p->tablero->grilla[0][2]))) {
-                if(( p->tablero->grilla[1][0]) == jugador) {
-                        ret= 1;
-                        no_encontre_resultado=0;
-                        printf("GANEE");
-                }
+	if(p->tablero->grilla[1][1]!= PART_SIN_MOVIMIENTO){
 
-            }
-     }
-     }//fin no encontre resultado
+		if( (p->tablero->grilla[1][0] == p->tablero->grilla[1][1] == p->tablero->grilla[1][2]) || (p->tablero->grilla[0][1] == p->tablero->grilla[1][1] == p->tablero->grilla[2][1]) || (p->tablero->grilla[2][0] == p->tablero->grilla[1][1] == p->tablero->grilla[0][2]) ) {
+			if( p->tablero->grilla[1][0] == jugador) {
+				retornar=1;
+				no_encontre_resultado=0;
+				}
+			}
+		}
+}
 
+if(no_encontre_resultado==1){
 
-     if(no_encontre_resultado==1){
+	if(p->tablero->grilla[2][2]!= PART_SIN_MOVIMIENTO){
 
-     if(( p->tablero->grilla[2][2])!=PART_SIN_MOVIMIENTO){
-
-        if ((( p->tablero->grilla[2][0]) == ( p->tablero->grilla[2][1]) == ( p->tablero->grilla[2][2])) || (( p->tablero->grilla[0][2]) == ( p->tablero->grilla[1][2]) == ( p->tablero->grilla[2][2]))){
-                if(( p->tablero->grilla[2][0])== jugador) {
-                        ret= 1;
-                        no_encontre_resultado=0;
-                        printf("GANEE");
-                }
-        }
-     } //fin no encontre_resultado
-     }
-
-    return ret;
+		if( (p->tablero->grilla[2][0] == p->tablero->grilla[2][1] == p->tablero->grilla[2][2]) || (p->tablero->grilla[0][2] == p->tablero->grilla[1][2] == p->tablero->grilla[2][2]) ) {
+			if( p->tablero->grilla[2][0] == jugador) {
+				retornar=1;
+				no_encontre_resultado=0;
+				}
+			}
+		}
+}
+printf("el retorno %d",&retornar);
+return retornar;
 
 }
 
@@ -144,15 +141,16 @@ int juego_modo_UvsU(tPartida p){
                 if(resultado_partida(p,p->turno_de)==1){
                         printf("adentro if");
                 control_partida= PART_GANA_JUGADOR_2;
-
                 }
+                else control_partida= PART_EMPATE;
 
-                        (p)->turno_de = PART_JUGADOR_1;
+                (p)->turno_de = PART_JUGADOR_1;
 
             }
 
 
         }//fin while
+        printf("Control partida %d",&control_partida);
         printf("termino  %i",p->estado);
 return 0;
 }
@@ -172,25 +170,10 @@ int juego_modo_JyAgente(tPartida p){
     while(en_juego==0){
 
         if(p->turno_de ==PART_JUGADOR_1){
-         printf("\n Turno de: %s",p->nombre_jugador_1);
-         printf("\n Indique su jugada en fila: ");
-         scanf("%d",&x);
-         printf("\n Indique su jugada en columna: ");
-         scanf("%d",&y);
+            solicitar_movimiento(p);
 
-
-         if(jugada_realizada==PART_MOVIMIENTO_ERROR){
-
-            while(x>3 && y>3){
-                printf("\n Indique un valor de fila valido: ");
-                scanf("%d",&x);
-                printf("\n Indique un valor de columna valido: ");
-                scanf("%d",&y);
-            }
-         }
-
-        jugada_realizada=nuevo_movimiento(p,x,y);
-        crear_busqueda_adversaria(&b, p);
+            crear_busqueda_adversaria(&b, p);
+            printf("luego de crear adversario");
          imprimir_tablero(p);
          p->turno_de=PART_JUGADOR_2;
         }
