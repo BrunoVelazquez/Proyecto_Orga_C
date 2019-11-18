@@ -63,51 +63,34 @@ void solicitar_movimiento(tPartida p){
 int resultado_partida(tPartida p,int jugador){
 
 int retornar=0;
-
 int no_encontre_resultado=1;
-printf("es el turno de: %d",jugador);
 
-if (no_encontre_resultado==1)
-{
+if (no_encontre_resultado==1) {
 
-    if (p->tablero->grilla[0][0]!= PART_SIN_MOVIMIENTO)
-    {
-        printf("segundo if %d",p->tablero->grilla[0][0]);
-                printf("segundo if %d",p->tablero->grilla[0][1]);
-                        printf("segundo if %d",p->tablero->grilla[0][2]);
-        if (((p)->tablero->grilla[0][0]) == ((p)->tablero->grilla[0][1]) == ((p)->tablero->grilla[0][2]) )//||
-           //(p->tablero->grilla[0][0] == p->tablero->grilla[1][0] == p->tablero->grilla[2][0]) ||
-           //(p->tablero->grilla[0][0] == p->tablero->grilla[1][1] == p->tablero->grilla[2][2]) )
-            {
-            printf("jugada OK");
-        }
+    if (p->tablero->grilla[0][0]!= PART_SIN_MOVIMIENTO){
 
-<<<<<<< HEAD
-		if( (p->tablero->grilla[0][0] == p->tablero->grilla[0][1] == p->tablero->grilla[0][2]) ||
-            (p->tablero->grilla[0][0] == p->tablero->grilla[1][0] == p->tablero->grilla[2][0]) ||
-            (p->tablero->grilla[0][0] == p->tablero->grilla[1][1] == p->tablero->grilla[2][2]) ) {
-			//printf("jugada ok");
-=======
-        if (((p->tablero->grilla[0][0] == p->tablero->grilla[0][1] ) == p->tablero->grilla[0][2]) ||
-            ((p->tablero->grilla[0][0] == p->tablero->grilla[1][0] ) == p->tablero->grilla[2][0]) ||
-            ((p->tablero->grilla[0][0] == p->tablero->grilla[1][1] ) == p->tablero->grilla[2][2]) ) {
-			printf("jugada ok");
->>>>>>> 5a6aa6754786640c0040483506fbe4e197dc0e66
-			if( p->tablero->grilla[0][0] == jugador) {
+        if (( (p->tablero->grilla[0][0] == jugador) && (p->tablero->grilla[0][1] == jugador) &&(p->tablero->grilla[0][2]==jugador)) ||
+           ( (p->tablero->grilla[0][0] == jugador) && (p->tablero->grilla[1][0] == jugador) &&(p->tablero->grilla[2][0]==jugador)) ||
+           ( (p->tablero->grilla[0][0] == jugador) && (p->tablero->grilla[1][1] == jugador) &&(p->tablero->grilla[2][2]==jugador)) ) {
+
+        	if( p->tablero->grilla[0][0] == jugador) {
 				retornar=1;
 				no_encontre_resultado=0;
 				}
-			}
-		}
-}
+            }
+
+        }
+    }
+
 
 if(no_encontre_resultado==1){
 
 	if(p->tablero->grilla[1][1]!= PART_SIN_MOVIMIENTO){
 
-        if (((p->tablero->grilla[1][0] == p->tablero->grilla[1][1] ) == p->tablero->grilla[1][2]) ||
-            ((p->tablero->grilla[0][1] == p->tablero->grilla[1][1] ) == p->tablero->grilla[2][1]) ||
-            ((p->tablero->grilla[2][0] == p->tablero->grilla[1][1] ) == p->tablero->grilla[0][2]) ) {
+        if (( (p->tablero->grilla[1][0] == jugador) && (p->tablero->grilla[1][1] == jugador) &&(p->tablero->grilla[1][2]==jugador)) ||
+           ( (p->tablero->grilla[0][1] == jugador) && (p->tablero->grilla[1][1] == jugador) &&(p->tablero->grilla[2][1]==jugador)) ||
+           ( (p->tablero->grilla[2][0] == jugador) && (p->tablero->grilla[1][1] == jugador) &&(p->tablero->grilla[0][2]==jugador)) ) {
+
 			if( p->tablero->grilla[1][0] == jugador) {
 				retornar=1;
 				no_encontre_resultado=0;
@@ -120,9 +103,9 @@ if(no_encontre_resultado==1){
 
 	if(p->tablero->grilla[2][2]!= PART_SIN_MOVIMIENTO){
 
-		if (((p->tablero->grilla[2][0] == p->tablero->grilla[2][1] ) == p->tablero->grilla[2][2]) ||
-            ((p->tablero->grilla[0][2] == p->tablero->grilla[1][2] ) == p->tablero->grilla[2][2]) )
-        {
+		if (( (p->tablero->grilla[2][0] == jugador) && (p->tablero->grilla[2][1] == jugador) &&(p->tablero->grilla[2][2]==jugador)) ||
+           ( (p->tablero->grilla[0][2] == jugador) && (p->tablero->grilla[1][2] == jugador) &&(p->tablero->grilla[2][2]==jugador)) ) {
+
 			if( p->tablero->grilla[2][0] == jugador)
 			{
 				retornar=1;
@@ -138,7 +121,7 @@ return retornar;
 int juego_modo_UvsU(tPartida p){
 
     int control_partida=PART_EN_JUEGO;
-    int i=0;
+    int i=1;
     printf("\n Tablero: \n");
     imprimir_tablero(p);
     printf("\n\n Para jugar debe indicar su movimiento en terminos de fila y columna. En ese orden ");
@@ -152,13 +135,11 @@ int juego_modo_UvsU(tPartida p){
 
             int i= resultado_partida(p,p->turno_de);
 
-            printf("\n\nresultado de metodo resultado %d",i);
              if(i==1){
-                    printf("adentro if");
                 control_partida= PART_GANA_JUGADOR_1;
+                printf("\n\nGANO EL JUGADOR: %s",p->nombre_jugador_1);
              }
              (p)->turno_de = PART_JUGADOR_2;
-            printf("turno jugador: %d", p->turno_de);
 
             }
         else{ // (p)->turno_de == PART_JUGADOR_2
@@ -167,18 +148,19 @@ int juego_modo_UvsU(tPartida p){
                 int i= resultado_partida(p,p->turno_de);
 
                 if(i==1){
-                        printf("adentro if");
                 control_partida= PART_GANA_JUGADOR_2;
+                printf("\n\nGANO EL JUGADOR: %c",p->nombre_jugador_2);
                 }
                 (p)->turno_de = PART_JUGADOR_1;
             }
         i++;
         }//fin while
 
-       if(i==9) {
+       if(i==8) {
             (p)->estado=PART_EMPATE;
             printf("¡FUE EMPATE!");
        }
+       main();
 return 0;
 }
 
