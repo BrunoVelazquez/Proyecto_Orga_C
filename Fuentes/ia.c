@@ -203,6 +203,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
 
 
                     crear_sucesores_min_max(a,nodo_nuevo,0,alpha,beta,jugador_max,jugador_min);
+                    printf("\nluego de ultima llamada recursiva");
                     tEstado estado_nuevo_nodo= nodo_nuevo->elemento;
 
                      utilidad_del_estado= valor_utilidad(estado_nuevo_nodo,jugador_max);
@@ -224,6 +225,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                     corte=0;
                     lista_sucesores = estados_sucesores(estadoN,jugador_min);
                     longitud= l_longitud(lista_sucesores);
+                     printf("\n long: %d",longitud);
                     cursor=1;
 
                     while(cursor<=longitud && corte==0){
@@ -234,6 +236,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
 
 
                         crear_sucesores_min_max(a,nodo_nuevo,1,alpha,beta,jugador_max,jugador_min);
+                        printf("\nluego de ultima llamada recursiva");
                         tEstado estado_nuevo_nodo= nodo_nuevo->elemento;
                         utilidad_del_estado= valor_utilidad(estado_nuevo_nodo,jugador_min);
                         printf("\n\n utilidad del nodo: %d",utilidad_del_estado);
@@ -254,7 +257,9 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
     else  {
             printf("\nELSE de IA NO TERMINO %d",valor_utilidad(estadoN,es_max));
             estadoN->utilidad= valor_utilidad(estadoN,es_max);
-        l_destruir(&lista_sucesores,&fEliminar);
+            printf("\n antes de l destruir");
+            l_destruir(&lista_sucesores,&fNoEliminar);
+            printf("\n despues de l destruir");
     }
 
 }
@@ -270,12 +275,18 @@ static int valor_utilidad(tEstado e, int jugador_max){
 
     int ret=IA_EMPATA_MAX;
     int no_encontre_resultado=1;
+    int n1=3;
+    int n2=4;
+    int n3=5;
 
      if(no_encontre_resultado==1){
 
      if(( e->grilla[0][0])!=PART_SIN_MOVIMIENTO){
 
-          if ((( e->grilla[0][0]) == ( e->grilla[0][1]) == (e->grilla[0][2])) || (( e->grilla[0][0]) == ( e->grilla[1][0]) == ( e->grilla[2][0])) || (( e->grilla[0][0]) == ( e->grilla[1][1]) == ( e->grilla[2][2]))){
+          if (((e->grilla[0][0] == jugador_max) && (e->grilla[0][1]==jugador_max) && (e->grilla[0][2] ==jugador_max)) ||
+              (( e->grilla[0][0] == jugador_max) && (e->grilla[1][0]== jugador_max) && ( e->grilla[2][0]==jugador_max)) ||
+              ((e->grilla[0][0] == jugador_max) && (e->grilla[1][1]==jugador_max) && ( e->grilla[2][2]== jugador_max))){
+
                 if(( e->grilla[0][0]) == jugador_max) {
                         ret= IA_GANA_MAX;
                         no_encontre_resultado=0;
@@ -294,7 +305,9 @@ static int valor_utilidad(tEstado e, int jugador_max){
 
      if((e->grilla[1][1])!=PART_SIN_MOVIMIENTO){
 
-            if (((e->grilla[1][0]) == (e->grilla[1][1]) == (e->grilla[1][2])) || ((e->grilla[0][1]) == (e->grilla[1][1]) == (e->grilla[2][1])) || ((e->grilla[2][0]) ==(e->grilla[1][1]) == (e->grilla[0][2]))) {
+        if(   ((e->grilla[1][0] == jugador_max) && (e->grilla[1][1]==jugador_max) && (e->grilla[1][2] ==jugador_max)) ||
+              (( e->grilla[0][1] == jugador_max) && (e->grilla[1][1]== jugador_max) && ( e->grilla[2][1]==jugador_max)) ||
+              ((e->grilla[2][0] == jugador_max) && (e->grilla[1][1]==jugador_max) && ( e->grilla[0][2]== jugador_max))){
                 if((e->grilla[1][0]) == jugador_max) {
                         ret= IA_GANA_MAX;
                         no_encontre_resultado=0;
@@ -313,7 +326,8 @@ static int valor_utilidad(tEstado e, int jugador_max){
 
      if((e->grilla[2][2])!=PART_SIN_MOVIMIENTO){
 
-        if (((e->grilla[2][0]) == (e->grilla[2][1]) == (e->grilla[2][2])) || ((e->grilla[0][2]) == (e->grilla[1][2]) == (e->grilla[2][2]))){
+        if (  ((e->grilla[2][0] == jugador_max) && (e->grilla[2][1]==jugador_max) && (e->grilla[2][2] ==jugador_max)) ||
+              (( e->grilla[0][2] == jugador_max) && (e->grilla[1][2]== jugador_max) && ( e->grilla[2][2]==jugador_max)) ){
                 if((e->grilla[2][0])== jugador_max) {
                         ret= IA_GANA_MAX;
                         no_encontre_resultado=0;
@@ -382,7 +396,6 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador){
             if(valor_grilla==PART_SIN_MOVIMIENTO){ // Es una casilla libre
                 printf("\n Se inserta en fila:  %d",fila);
                 printf("      Se inserta en columna:  %d",columna);
-                printf("\n Valor grilla(list estados sucesores IGUAL A PART SIN MOVIMIENTO: %d",valor_grilla);
                 estado_clon= clonar_estado(e); //clono el estado original
 
 
@@ -396,7 +409,6 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador){
 
                   tEstado pos=l_recuperar(lista_con_sucesores,l_primera(lista_con_sucesores));
                 int es= pos->utilidad;
-                printf("\n Utilidad de lo insertado:  %d",es);
             }
                 }
                 columna=0;
