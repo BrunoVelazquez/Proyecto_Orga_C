@@ -1,4 +1,4 @@
-#define DEBUG_MAIN_ARBOL
+//#define DEBUG_MAIN_ARBOL
 
 #include "arbol.h"
 #include <stdio.h>

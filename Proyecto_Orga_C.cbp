@@ -31,28 +31,31 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Estructuras/ProgramaPrincipal/main.c">
+		<Unit filename="Fuentes/ListTest.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Estructuras/TDAArbol/arbol.c">
+		<Unit filename="Fuentes/Partida.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Estructuras/TDAArbol/arbol.h" />
-		<Unit filename="Estructuras/TDAIA/ia.c">
+		<Unit filename="Fuentes/arbol.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Estructuras/TDALista/ListTest.c">
+		<Unit filename="Fuentes/arbol.h" />
+		<Unit filename="Fuentes/arbolTest.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Estructuras/TDALista/lista.c">
+		<Unit filename="Fuentes/ia.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Estructuras/TDALista/lista.h" />
-		<Unit filename="Estructuras/TDAPartida/Partida.c">
+		<Unit filename="Fuentes/ia.h" />
+		<Unit filename="Fuentes/lista.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="IA/ia.h" />
-		<Unit filename="Partida/partida.h" />
+		<Unit filename="Fuentes/lista.h" />
+		<Unit filename="Fuentes/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Fuentes/partida.h" />
 		<Extensions>
 			<envvars />
 			<code_completion />
