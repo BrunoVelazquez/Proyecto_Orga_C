@@ -72,11 +72,17 @@ if(no_encontre_resultado==1){
         printf("segundo if %d",p->tablero->grilla[0][0]);
                 printf("segundo if %d",p->tablero->grilla[0][1]);
                         printf("segundo if %d",p->tablero->grilla[0][2]);
+        if (((p)->tablero->grilla[0][0]) == ((p)->tablero->grilla[0][1]) == ((p)->tablero->grilla[0][2]) )//||
+           //(p->tablero->grilla[0][0] == p->tablero->grilla[1][0] == p->tablero->grilla[2][0]) ||
+           //(p->tablero->grilla[0][0] == p->tablero->grilla[1][1] == p->tablero->grilla[2][2]) )
+            {
+            printf("jugada OK");
+        }
 
 		if( (p->tablero->grilla[0][0] == p->tablero->grilla[0][1] == p->tablero->grilla[0][2]) ||
             (p->tablero->grilla[0][0] == p->tablero->grilla[1][0] == p->tablero->grilla[2][0]) ||
             (p->tablero->grilla[0][0] == p->tablero->grilla[1][1] == p->tablero->grilla[2][2]) ) {
-			printf("jugada ok");
+			//printf("jugada ok");
 			if( p->tablero->grilla[0][0] == jugador) {
 				retornar=1;
 				no_encontre_resultado=0;
@@ -110,7 +116,6 @@ if(no_encontre_resultado==1){
 			}
 		}
 }
-printf("el retorno %d",retornar);
 return retornar;
 
 }
@@ -118,11 +123,11 @@ return retornar;
 int juego_modo_UvsU(tPartida p){
 
     int control_partida=PART_EN_JUEGO;
-    printf("control partida: %d",control_partida);
+    int i=0;
     printf("\n Tablero: \n");
     imprimir_tablero(p);
     printf("\n\n Para jugar debe indicar su movimiento en terminos de fila y columna. En ese orden ");
-    while(control_partida== PART_EN_JUEGO){
+    while(control_partida== PART_EN_JUEGO && i<10){
 
         if((p)->turno_de == PART_JUGADOR_1  ){
 
@@ -132,14 +137,12 @@ int juego_modo_UvsU(tPartida p){
 
             int i= resultado_partida(p,p->turno_de);
 
-            printf("resultado de metodo resultado %d",i);
+            printf("\n\nresultado de metodo resultado %d",i);
              if(i==1){
                     printf("adentro if");
                 control_partida= PART_GANA_JUGADOR_1;
              }
-             //else control_partida= PART_EMPATE;
-
-            (p)->turno_de = PART_JUGADOR_2;
+             (p)->turno_de = PART_JUGADOR_2;
             printf("turno jugador: %d", p->turno_de);
 
             }
@@ -152,16 +155,15 @@ int juego_modo_UvsU(tPartida p){
                         printf("adentro if");
                 control_partida= PART_GANA_JUGADOR_2;
                 }
-                //else control_partida= PART_EMPATE;
-
                 (p)->turno_de = PART_JUGADOR_1;
-
             }
-
-
+        i++;
         }//fin while
-        printf("Control partida %d",control_partida);
-        printf("termino  %i",p->estado);
+
+       if(i==9) {
+            (p)->estado=PART_EMPATE;
+            printf("¡FUE EMPATE!");
+       }
 return 0;
 }
 
@@ -175,29 +177,27 @@ int juego_modo_JyAgente(tPartida p){
 
     tBusquedaAdversaria b;
     int en_juego=0;
-    //crear_busqueda_adversaria(&b, p);
 
     while(en_juego==0){
 
         if(p->turno_de ==PART_JUGADOR_1){
             solicitar_movimiento(p);
-
-            crear_busqueda_adversaria(&b, p);
-            printf("luego de crear adversario");
-         imprimir_tablero(p);
-         p->turno_de=PART_JUGADOR_2;
+            imprimir_tablero(p);
+            p->turno_de=PART_JUGADOR_2;
         }
         else //Jugador 2 AGENTE IA
         {
+            printf("\n ES EL TURNO DE: %d",p->turno_de);
+            crear_busqueda_adversaria(&b, p);
+            printf("\n antes de proximo mov");
             proximo_movimiento(b,&x,&y);
+            printf("\nluego de proximo mov");
 
         printf("valor x",x);
         printf("valor x \n\n",y);
          imprimir_tablero(p);
         }
     }
-
-
 }
 
 int main(){
@@ -255,8 +255,6 @@ int main(){
 
 
     if(modo_juego==1) {
-
-            //printf("\n quien comienza: ",opcion_juego);
             modo_juego= PART_MODO_USUARIO_VS_USUARIO;
             nueva_partida(&p,modo_juego,comienza,Jugador_1,Jugador_2);
             estado_juego= juego_modo_UvsU(p);
