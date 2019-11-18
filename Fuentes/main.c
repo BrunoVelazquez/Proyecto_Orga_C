@@ -53,9 +53,9 @@ void solicitar_movimiento(tPartida p)
             printf("\n\n\n Turno de: %s",p->nombre_jugador_2);
         }
 
-    printf("\nIndique su jugada en fila: ");
+    //printf("\nIndique su jugada en fila: ");
     scanf("%d",&x);
-    printf("Indique su jugada en columna: ");
+    //printf("Indique su jugada en columna: ");
     scanf("%d",&y);
 
     jugada_realizada=nuevo_movimiento(p,x,y);
@@ -194,11 +194,12 @@ int juego_modo_JyAgente(tPartida p)
     int x;
     int y;
     int jugada_realizada;
-    printf("\n Tablero: \n");
+    //printf("\n Tablero: \n");
     imprimir_tablero(p);
-    printf("\n\n Para jugar debe indicar su movimiento en terminos de fila y columna. En ese orden \n");
+    //printf("\n\n Para jugar debe indicar su movimiento en terminos de fila y columna. En ese orden \n");
 
     tBusquedaAdversaria b;
+    crear_busqueda_adversaria(&b, p);
     int en_juego=0;
 
     while (en_juego==0)
@@ -206,13 +207,13 @@ int juego_modo_JyAgente(tPartida p)
         if (p->turno_de ==PART_JUGADOR_1)
         {
             solicitar_movimiento(p);
-            imprimir_tablero(p);
+           // imprimir_tablero(p);
             p->turno_de=PART_JUGADOR_2;
         }
         else //Jugador 2 AGENTE IA
         {
             printf("\n ES EL TURNO DE: %d",p->turno_de);
-            crear_busqueda_adversaria(&b, p);
+
             printf("\n antes de proximo mov");
             proximo_movimiento(b,&x,&y);
             printf("\nluego de proximo mov");
@@ -221,6 +222,8 @@ int juego_modo_JyAgente(tPartida p)
         printf("valor x \n\n",y);
         imprimir_tablero(p);
         }
+
+
     }
 }
 
