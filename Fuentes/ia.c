@@ -284,10 +284,13 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                 utilidad_del_estado= valor_utilidad(estado_nuevo_nodo,jugador_min);
                 printf("\n\n utilidad del nodo: %d",utilidad_del_estado);
 
-                if(beta> utilidad_del_estado) beta=utilidad_del_estado;
+                if(beta> utilidad_del_estado)
+                    beta=utilidad_del_estado;
+
                 printf("\n\n el valor de beta: %d",beta);
 
-                if(beta <= alpha) corte=1;
+                if(beta <= alpha)
+                    corte=1;
 
                 cursor=cursor+1;
                 estadoN->utilidad=beta;
@@ -295,14 +298,14 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
             estadoN->utilidad=beta;
         }
     }
-    else  {
-            printf("\nELSE de IA NO TERMINO %d",valor_utilidad(estadoN,es_max));
-            estadoN->utilidad= valor_utilidad(estadoN,es_max);
-            printf("\n antes de l destruir");
-            l_destruir(&lista_sucesores,&fNoEliminar);
-            printf("\n despues de l destruir");
+    else
+    {
+        printf("\nELSE de IA NO TERMINO %d",valor_utilidad(estadoN,es_max));
+        estadoN->utilidad= valor_utilidad(estadoN,es_max);
+        printf("\n antes de l destruir");
+        l_destruir(&lista_sucesores,&fNoEliminar);
+        printf("\n despues de l destruir");
     }
-
 }
 /**
 >>>>>  A IMPLEMENTAR   <<<<< LISTOOOOOOOOOOO
@@ -324,9 +327,9 @@ static int valor_utilidad(tEstado e, int jugador_max)
 
      if(( e->grilla[0][0])!=PART_SIN_MOVIMIENTO){
 
-          if (((e->grilla[0][0] == jugador_max) && (e->grilla[0][1]==jugador_max) && (e->grilla[0][2] ==jugador_max)) ||
-              (( e->grilla[0][0] == jugador_max) && (e->grilla[1][0]== jugador_max) && ( e->grilla[2][0]==jugador_max)) ||
-              ((e->grilla[0][0] == jugador_max) && (e->grilla[1][1]==jugador_max) && ( e->grilla[2][2]== jugador_max))){
+          if (((e->grilla[0][0] == jugador_max) && (e->grilla[0][1] == jugador_max) && ( e->grilla[0][2] == jugador_max)) ||
+              ((e->grilla[0][0] == jugador_max) && (e->grilla[1][0] == jugador_max) && ( e->grilla[2][0] == jugador_max)) ||
+              ((e->grilla[0][0] == jugador_max) && (e->grilla[1][1] == jugador_max) && ( e->grilla[2][2] == jugador_max))){
 
                 if(( e->grilla[0][0]) == jugador_max) {
                         ret= IA_GANA_MAX;
