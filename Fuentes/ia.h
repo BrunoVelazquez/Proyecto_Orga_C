@@ -21,7 +21,7 @@ struct busqueda_adversaria{
 };
 
 struct estado{
-    int grilla [3][3];
+    int grilla[3][3];
     int utilidad;
 };
 

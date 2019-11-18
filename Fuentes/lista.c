@@ -1,12 +1,12 @@
 #include "lista.h"
 #include <stdlib.h>
 
-void fEliminar(tElemento e);
 void destruirREC(tPosicion pos, void(*fEliminar)(tElemento));
 
 void crear_lista(tLista* lista)
 {
     (*lista) = (tLista) malloc(sizeof(struct celda));
+
     if (*lista == NULL)
         exit(LST_ERROR_MEMORIA);
 
@@ -17,6 +17,7 @@ void crear_lista(tLista* lista)
 void l_insertar(tLista lista, tPosicion pos, tElemento e)
 {
     tPosicion celda_nueva = (tPosicion) malloc(sizeof(struct celda));
+
     if (celda_nueva == NULL)
         exit(LST_ERROR_MEMORIA);
 
@@ -31,9 +32,11 @@ void l_eliminar(tLista lista, tPosicion pos, void (*fEliminar)(tElemento))
         exit(LST_POSICION_INVALIDA);
 
     fEliminar((pos->siguiente)->elemento);
-    (pos->siguiente)->elemento = NULL;
     tPosicion pos_NULL = pos->siguiente;
-    pos->siguiente = (pos->siguiente)->siguiente;
+    pos->siguiente = pos_NULL->siguiente;
+
+    pos_NULL->elemento  = NULL;
+    pos_NULL->siguiente = NULL;
     free(pos_NULL);
 }
 
@@ -48,21 +51,21 @@ void l_destruir(tLista * lista, void (*fEliminar)(tElemento))
 
     centinela->siguiente = NULL;
     free(centinela);
-    lista= NULL;
+    *lista = NULL;
 }
 
 void destruirREC(tPosicion pos, void(*fEliminar)(tElemento))
 {
-    while (pos->siguiente != NULL)
+    if (pos->siguiente != NULL)
     {
         destruirREC(pos->siguiente, fEliminar);
-        pos->siguiente = NULL;
     }
 
     fEliminar(pos->elemento);
+
     pos->elemento  = NULL;
+    pos->siguiente = NULL;
     free(pos);
-    pos = NULL;
 }
 
 tElemento l_recuperar(tLista lista, tPosicion pos)
@@ -88,11 +91,12 @@ tPosicion l_siguiente(tLista lista, tPosicion pos)
 
 tPosicion l_anterior(tLista lista, tPosicion pos)
 {
-    if(pos == l_primera(lista))
+    if (pos == lista)
         exit(LST_NO_EXISTE_ANTERIOR);
 
     tPosicion celda_actual = lista;
-    while(celda_actual->siguiente != pos && celda_actual->siguiente != NULL)
+
+    while (celda_actual->siguiente != pos && celda_actual->siguiente != NULL)
     {
         celda_actual = celda_actual->siguiente;
     }

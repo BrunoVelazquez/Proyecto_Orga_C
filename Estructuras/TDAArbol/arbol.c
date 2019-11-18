@@ -109,12 +109,12 @@ tLista a_hijos(tArbol arbol, tNodo nodo)
  Los elementos almacenados en el �rbol son eliminados mediante la funci�n fEliminar parametrizada.
 **/
 void a_destruir(tArbol * a, void (*fEliminar)(tElemento)){
-    tNodo nodo_aux= *a->raiz;
+    tNodo nodo_aux= (*a)->raiz;
     // Caso base: Solo raiz.
     l_destruir(&nodo_aux->hijos,&eliminarNodos); //elimino los hijos
     fEliminar(nodo_aux->elemento);
     free(nodo_aux);
-    *a->raiz=NULL;
+    (*a)->raiz=NULL;
     free(a);
     a=NULL;
 }
@@ -131,10 +131,10 @@ void a_sub_arbol(tArbol a, tNodo n, tArbol * sa){
     if (*sa == NULL)
         exit(ARB_ERROR_MEMORIA);
 
-    sa->raiz = n->elemento;
+    (*sa)->raiz = n->elemento;
 
 
-        }
+}
 void eliminarNodos(tElemento n){
 
     tNodo  nodo= (tNodo) n;

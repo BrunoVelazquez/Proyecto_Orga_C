@@ -1,3 +1,5 @@
+//#define DEBUG_MAIN_LISTA
+
 #include "lista.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,14 +9,16 @@
 //#define DEBUG_SIGUIENTE
 //#define DEBUG_ANTERIOR
 
+#ifdef DEBUG_MAIN_LISTA
 void l_imprimir(tLista lista)
 {
     tPosicion cursor = l_primera(lista);
+    tPosicion fin = l_fin(lista);
     printf("Lista completa: ");
-    while (cursor->siguiente != NULL)
+    while (cursor != fin)
     {
         printf("%d ,",*((int*) l_recuperar(lista,cursor)));
-        cursor = cursor->siguiente;
+        cursor = l_siguiente(lista,cursor);
     }
     printf("\nLongitud lista: %d\n", l_longitud(lista));
 }
@@ -57,3 +61,4 @@ int main() //TEST
     l_destruir(&lista,&fEliminar);
     return 0;
 }
+#endif // DEBUG_MAIN_LISTA
