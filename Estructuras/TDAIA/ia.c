@@ -191,6 +191,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                 lista_sucesores = estados_sucesores(estadoN,jugador_max);
                 longitud= l_longitud(lista_sucesores);
                 cursor=1;
+                printf("\n cursor= %d",&cursor);
 
                 while(cursor<=longitud && corte==0){
 
