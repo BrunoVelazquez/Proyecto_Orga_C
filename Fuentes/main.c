@@ -66,16 +66,19 @@ int retornar=0;
 
 int no_encontre_resultado=1;
 printf("es el turno de: %d",jugador);
-if(no_encontre_resultado==1){
 
-	if(p->tablero->grilla[0][0]!= PART_SIN_MOVIMIENTO){
+if (no_encontre_resultado==1)
+{
+
+    if (p->tablero->grilla[0][0]!= PART_SIN_MOVIMIENTO)
+    {
         printf("segundo if %d",p->tablero->grilla[0][0]);
                 printf("segundo if %d",p->tablero->grilla[0][1]);
                         printf("segundo if %d",p->tablero->grilla[0][2]);
 
-		if( (p->tablero->grilla[0][0] == p->tablero->grilla[0][1] == p->tablero->grilla[0][2]) ||
-            (p->tablero->grilla[0][0] == p->tablero->grilla[1][0] == p->tablero->grilla[2][0]) ||
-            (p->tablero->grilla[0][0] == p->tablero->grilla[1][1] == p->tablero->grilla[2][2]) ) {
+        if (((p->tablero->grilla[0][0] == p->tablero->grilla[0][1] ) == p->tablero->grilla[0][2]) ||
+            ((p->tablero->grilla[0][0] == p->tablero->grilla[1][0] ) == p->tablero->grilla[2][0]) ||
+            ((p->tablero->grilla[0][0] == p->tablero->grilla[1][1] ) == p->tablero->grilla[2][2]) ) {
 			printf("jugada ok");
 			if( p->tablero->grilla[0][0] == jugador) {
 				retornar=1;
@@ -89,7 +92,9 @@ if(no_encontre_resultado==1){
 
 	if(p->tablero->grilla[1][1]!= PART_SIN_MOVIMIENTO){
 
-		if( (p->tablero->grilla[1][0] == p->tablero->grilla[1][1] == p->tablero->grilla[1][2]) || (p->tablero->grilla[0][1] == p->tablero->grilla[1][1] == p->tablero->grilla[2][1]) || (p->tablero->grilla[2][0] == p->tablero->grilla[1][1] == p->tablero->grilla[0][2]) ) {
+        if (((p->tablero->grilla[1][0] == p->tablero->grilla[1][1] ) == p->tablero->grilla[1][2]) ||
+            ((p->tablero->grilla[0][1] == p->tablero->grilla[1][1] ) == p->tablero->grilla[2][1]) ||
+            ((p->tablero->grilla[2][0] == p->tablero->grilla[1][1] ) == p->tablero->grilla[0][2]) ) {
 			if( p->tablero->grilla[1][0] == jugador) {
 				retornar=1;
 				no_encontre_resultado=0;
@@ -102,13 +107,16 @@ if(no_encontre_resultado==1){
 
 	if(p->tablero->grilla[2][2]!= PART_SIN_MOVIMIENTO){
 
-		if( (p->tablero->grilla[2][0] == p->tablero->grilla[2][1] == p->tablero->grilla[2][2]) || (p->tablero->grilla[0][2] == p->tablero->grilla[1][2] == p->tablero->grilla[2][2]) ) {
-			if( p->tablero->grilla[2][0] == jugador) {
+		if (((p->tablero->grilla[2][0] == p->tablero->grilla[2][1] ) == p->tablero->grilla[2][2]) ||
+            ((p->tablero->grilla[0][2] == p->tablero->grilla[1][2] ) == p->tablero->grilla[2][2]) )
+        {
+			if( p->tablero->grilla[2][0] == jugador)
+			{
 				retornar=1;
 				no_encontre_resultado=0;
-				}
-			}
-		}
+            }
+        }
+    }
 }
 printf("el retorno %d",retornar);
 return retornar;

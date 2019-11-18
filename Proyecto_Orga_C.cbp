@@ -31,9 +31,6 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Fuentes/ListTest.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="Fuentes/Partida.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -52,6 +49,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Fuentes/lista.h" />
+		<Unit filename="Fuentes/listaTest.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="Fuentes/main.c">
 			<Option compilerVar="CC" />
 		</Unit>
