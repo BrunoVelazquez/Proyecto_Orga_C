@@ -41,8 +41,8 @@ void crear_busqueda_adversaria(tBusquedaAdversaria * b, tPartida p){
     }
 
     // Se clona el estado del tablero de la partida, al estado inicial de la búsqueda adversaria.
-    for(i=0; i<3; i++){
-        for(j=0; j<3; j++){
+    for ( i = 0 ; i < 3 ; i++) {
+        for ( j = 0 ; j < 3 ; j++ ){
             estado->grilla[i][j] = p->tablero->grilla[i][j];
         }
     }
