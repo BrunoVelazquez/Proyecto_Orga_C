@@ -214,13 +214,15 @@ int juego_modo_JyAgente(tPartida p)
         {   crear_busqueda_adversaria(&b, p);
             printf("\n ES EL TURNO DE: %d",p->turno_de);
 
-            printf("\n antes de proximo mov");
+            //printf("\n antes de proximo mov");
             proximo_movimiento(b,&x,&y);
-            printf("\nluego de proximo mov");
+           printf("\nluego de proximo mov");
+            printf("valor x: %d",x);
+            printf("valor y : %d\n\n",y);
+            nuevo_movimiento(p,x+1,y+1);
 
-            printf("valor x",x);
-            printf("valor x \n\n",y);
             imprimir_tablero(p);
+            p->turno_de=PART_JUGADOR_1;
         }
     }
 }

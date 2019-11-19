@@ -213,7 +213,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
     int cursor;
     tEstado estadoN= (tEstado) a_recuperar(a,n);
 
-    if( valor_utilidad(estadoN, es_max)== (IA_NO_TERMINO)){ // Esta bien
+    if( valor_utilidad(estadoN, jugador_max)== (IA_NO_TERMINO)){ // Esta bien
 
             if(es_max){
                 mejor_valor_sucesores= IA_INFINITO_NEG;
@@ -232,6 +232,10 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                     crear_sucesores_min_max(a,nodo_nuevo,0,alpha,beta,jugador_max,jugador_min);
 
                     tEstado estado_nuevo_nodo= (tEstado) a_recuperar(a,nodo_nuevo);
+                     imprimirr(estado_nuevo_nodo);
+                     printf("\n");
+                     //
+                     //             printf("\n ESTADO DEL NODO RECUPERADO LUEGO DE CS: %d",estado_nuevo_nodo->utilidad);
                     mejor_valor_sucesores=max(mejor_valor_sucesores,estado_nuevo_nodo);
 
                     alpha=max(alpha,mejor_valor_sucesores);
@@ -259,6 +263,11 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                         crear_sucesores_min_max(a,nodo_nuevo,1,alpha,beta,jugador_max,jugador_min);
 
                         tEstado estado_nuevo_nodo= a_recuperar(a,nodo_nuevo);
+
+                         imprimirr(estado_nuevo_nodo);
+
+                           printf("\n");
+                                 // printf("\n ESTADO DEL NODO RECUPERADO LUEGO DE CS: %d",estado_nuevo_nodo->utilidad);
                         mejor_valor_sucesores=min(estado_nuevo_nodo->utilidad,mejor_valor_sucesores);
 
                         beta=min(beta,mejor_valor_sucesores);
@@ -270,11 +279,16 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                     }
 
                     estadoN->utilidad= mejor_valor_sucesores;
+                  //  printf("\n El estado del mejor valor sucesor: %d",estadoN->utilidad);
 
                 }
-            estadoN->utilidad= valor_utilidad(estadoN,es_max);
+
+
+
         l_destruir(&lista_sucesores,&fEliminar);
     }
+      estadoN->utilidad= valor_utilidad(estadoN,jugador_max);
+    printf("ES UN ESTADO TERMINAL. Valor de utilidad: %d\n",estadoN->utilidad);
 
 }
 
