@@ -199,7 +199,7 @@ int juego_modo_JyAgente(tPartida p)
     printf("\n\n Para jugar debe indicar su movimiento en terminos de fila y columna. En ese orden \n");
 
     tBusquedaAdversaria b;
-    crear_busqueda_adversaria(&b, p);
+    //crear_busqueda_adversaria(&b, p);
     int en_juego=0;
 
     while (en_juego==0)
@@ -211,7 +211,7 @@ int juego_modo_JyAgente(tPartida p)
             p->turno_de=PART_JUGADOR_2;
         }
         else //Jugador 2 AGENTE IA
-        {
+        {   crear_busqueda_adversaria(&b, p);
             printf("\n ES EL TURNO DE: %d",p->turno_de);
 
             printf("\n antes de proximo mov");
