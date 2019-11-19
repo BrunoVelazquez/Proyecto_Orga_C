@@ -234,7 +234,8 @@ int main()
     int opcion_juego;
     int comienza;
     tPartida p;
-
+    int* a = malloc(sizeof(int));
+    *a = 30;
     int estado_juego;
 
     char Jugador_1[30];

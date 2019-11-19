@@ -153,6 +153,8 @@ void destruir_busqueda_adversaria(tBusquedaAdversaria * b)
     (*b)->jugador_max= -1;
     (*b)->jugador_min= -1;
     a_destruir(&((*b)->arbol_busqueda), &fEliminar);
+    free(*b);
+    *b = NULL;
 }
 
 // ===============================================================================================================
@@ -331,7 +333,6 @@ static int valor_utilidad(tEstado e, int jugador_max)
 {
     int ret=IA_EMPATA_MAX;
     int no_encontre_resultado=1;
-    int j_min;
      if(no_encontre_resultado==1){
 
      if(( e->grilla[0][0])!=PART_SIN_MOVIMIENTO){
@@ -345,18 +346,18 @@ static int valor_utilidad(tEstado e, int jugador_max)
                         no_encontre_resultado=0;
                 }
                   else
-                        {    if (((e->grilla[0][0] == 101) && (e->grilla[0][1] == 101) && ( e->grilla[0][2] == 101)) ||
-                                ((e->grilla[0][0] == 101) && (e->grilla[1][0] == 101) && ( e->grilla[2][0] == 101)) ||
-                                ((e->grilla[0][0] == 101) && (e->grilla[1][1] == 101) && ( e->grilla[2][2] == 101))){
-                                     if(( e->grilla[0][0]) == 101) {
+                        {    //if (((e->grilla[0][0] == 101) && (e->grilla[0][1] == 101) && ( e->grilla[0][2] == 101)) ||
+                               // ((e->grilla[0][0] == 101) && (e->grilla[1][0] == 101) && ( e->grilla[2][0] == 101)) ||
+                               // ((e->grilla[0][0] == 101) && (e->grilla[1][1] == 101) && ( e->grilla[2][2] == 101))){
+                            //if(( e->grilla[0][0]) == 101) {
                                 ret= IA_PIERDE_MAX;
                                 printf("\n entre a IA PIERDE MAX");
                                 no_encontre_resultado=0;
                 }
             }
         }
-              }
-     }
+
+
      }//fin no encontre resultado.
 
      if(no_encontre_resultado==1){
@@ -373,19 +374,19 @@ static int valor_utilidad(tEstado e, int jugador_max)
 
                 else
                 {
-                     if(   ((e->grilla[1][0] == 101) && (e->grilla[1][1]==101) && (e->grilla[1][2] ==101)) ||
-                            (( e->grilla[0][1] == 101) && (e->grilla[1][1]== 101) && ( e->grilla[2][1]==101)) ||
-                            ((e->grilla[2][0] == 101) && (e->grilla[1][1]==101) && ( e->grilla[0][2]== 101))){
+                    // if(   ((e->grilla[1][0] == 101) && (e->grilla[1][1]==101) && (e->grilla[1][2] ==101)) ||
+                     //       (( e->grilla[0][1] == 101) && (e->grilla[1][1]== 101) && ( e->grilla[2][1]==101)) ||
+                      //      ((e->grilla[2][0] == 101) && (e->grilla[1][1]==101) && ( e->grilla[0][2]== 101))){
 
-                                    if((e->grilla[1][1]) == 101) {
+                                 //   if((e->grilla[1][1]) == 101) {
                                                 ret= IA_PIERDE_MAX;
                                                  printf("\n entre a IA PIERDE MAX");
                                                 no_encontre_resultado=0;
                 }
             }
         }
-              }
-     }
+
+
      }//fin no encontre resultado
 
 
@@ -401,18 +402,18 @@ static int valor_utilidad(tEstado e, int jugador_max)
                 }
                   else
                 {
-                     if (  ((e->grilla[2][0] == 101) && (e->grilla[2][1]==101) && (e->grilla[2][2] ==101)) ||
-                        (( e->grilla[0][2] == 101) && (e->grilla[1][2]== 101) && ( e->grilla[2][2]==101)) ){
+                    // if (  ((e->grilla[2][0] == 101) && (e->grilla[2][1]==101) && (e->grilla[2][2] ==101)) ||
+                       // (( e->grilla[0][2] == 101) && (e->grilla[1][2]== 101) && ( e->grilla[2][2]==101)) ){
 
-                                if((e->grilla[2][2])== 101) {
-                                         printf("\n entre a IA PIERDE MAX");
+                           //     if((e->grilla[2][2])== 101) {
+                                        printf("\n entre a IA PIERDE MAX");
                                     ret= IA_PIERDE_MAX;
-                                no_encontre_resultado=0;
+                               no_encontre_resultado=0;
                 }
             }
         }
-              }
-     }
+
+
     } //fin no encontre_resultado
 
         //CASO DE IA NO TERMINO
