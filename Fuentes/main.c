@@ -158,7 +158,7 @@ int juego_modo_UvsU(tPartida p)
             if (i==1)
             {
                 control_partida= PART_GANA_JUGADOR_1;
-                printf("\n\nGANO EL JUGADOR: %s",p->nombre_jugador_1);
+                printf("\n\nGANO EL JUGADOR: %s\n\n",p->nombre_jugador_1);
             }
             (p)->turno_de = PART_JUGADOR_2;
 
@@ -173,19 +173,19 @@ int juego_modo_UvsU(tPartida p)
                 if (i==1)
                 {
                     control_partida= PART_GANA_JUGADOR_2;
-                    printf("\n\nGANO EL JUGADOR: %c",p->nombre_jugador_2);
+                    printf("\n\nGANO EL JUGADOR: %s\n\n",p->nombre_jugador_2);
                 }
                 (p)->turno_de = PART_JUGADOR_1;
         }
         i++;
     }//fin while
 
-    if (i==8)
+    if (i==10)
     {
         (p)->estado=PART_EMPATE;
-        printf("¡FUE EMPATE!");
+        printf("\n\nFUE EMPATE!\n\n");
     }
-    main();
+
     return 0;
 }
 
@@ -207,7 +207,7 @@ int juego_modo_JyAgente(tPartida p)
         if (p->turno_de ==PART_JUGADOR_1)
         {
             solicitar_movimiento(p);
-           imprimir_tablero(p);
+            imprimir_tablero(p);
             p->turno_de=PART_JUGADOR_2;
         }
         else //Jugador 2 AGENTE IA
@@ -218,12 +218,10 @@ int juego_modo_JyAgente(tPartida p)
             proximo_movimiento(b,&x,&y);
             printf("\nluego de proximo mov");
 
-        printf("valor x",x);
-        printf("valor x \n\n",y);
-        imprimir_tablero(p);
+            printf("valor x",x);
+            printf("valor x \n\n",y);
+            imprimir_tablero(p);
         }
-
-
     }
 }
 
@@ -234,7 +232,7 @@ int main()
     int opcion_juego;
     int comienza;
     tPartida p;
-
+    int continuar_juego = 1;
     int estado_juego;
 
     char Jugador_1[30];
@@ -242,70 +240,81 @@ int main()
 
     printf("\n TA-TE-TI \n");
     printf("------------------------\n");
-    printf("Opciones de partida: \n");
-    printf("1 - Usuario vs Usuario: \n");
-    printf("2 - Usuario vs Agente IA \n\n");
-    printf("Su opcion es: ");
 
-    scanf("%d", &modo_juego);
+    while (continuar_juego)
+    {
+        printf("Opciones de partida: \n");
+        printf("1 - Usuario vs Usuario: \n");
+        printf("2 - Usuario vs Agente IA \n\n");
+        printf("Su opcion es: ");
 
-    if(modo_juego==1)
-    {
-        printf("Indice nombre del Jugador 1: ");
-        scanf("%s", Jugador_1);
-        printf("Indice nombre del Jugador 2: ");
-        scanf("%s", Jugador_2);
-    }
-    else
-    {
-        if(modo_juego==2)
+        scanf("%d", &modo_juego);
+
+        if(modo_juego==1)
         {
-            printf("Indice nombre del Jugador : ");
+            printf("Indice nombre del Jugador 1: ");
             scanf("%s", Jugador_1);
-            strcpy(Jugador_2,"Agente IA");
-        }
-    }
-
-    printf("------------------------\n");
-    printf("\n Indice quien comenzara la partida: \n");
-    printf("1 - %s\n",Jugador_1);
-    printf("2 - %s\n",Jugador_2);
-    printf("3 - Modo Aleatorio\n");
-    printf("Su opcion es: ");
-    scanf("%d", &opcion_juego);
-
-    if (opcion_juego==1)
-    {
-        comienza=PART_JUGADOR_1;
-    }
-    else
-    {
-        if(opcion_juego==2)
-        {
-            comienza=PART_JUGADOR_2;
+            printf("Indice nombre del Jugador 2: ");
+            scanf("%s", Jugador_2);
         }
         else
         {
-            comienza= PART_JUGADOR_RANDOM;
+            if(modo_juego==2)
+            {
+                printf("Indice nombre del Jugador : ");
+                scanf("%s", Jugador_1);
+                strcpy(Jugador_2,"Agente IA");
+            }
         }
-    }
+
+        printf("------------------------\n");
+        printf("\n Indice quien comenzara la partida: \n");
+        printf("1 - %s\n",Jugador_1);
+        printf("2 - %s\n",Jugador_2);
+        printf("3 - Modo Aleatorio\n");
+        printf("Su opcion es: ");
+        scanf("%d", &opcion_juego);
+
+        if (opcion_juego==1)
+        {
+            comienza=PART_JUGADOR_1;
+        }
+        else
+        {
+            if(opcion_juego==2)
+            {
+                comienza=PART_JUGADOR_2;
+            }
+            else
+            {
+                comienza= PART_JUGADOR_RANDOM;
+            }
+        }
 
 
-    if (modo_juego==1)
-    {
-            modo_juego= PART_MODO_USUARIO_VS_USUARIO;
+        if (modo_juego==1)
+        {
+                modo_juego= PART_MODO_USUARIO_VS_USUARIO;
+                nueva_partida(&p,modo_juego,comienza,Jugador_1,Jugador_2);
+                estado_juego= juego_modo_UvsU(p);
+                finalizar_partida(&p);
+        }
+        else
+        {
             nueva_partida(&p,modo_juego,comienza,Jugador_1,Jugador_2);
-            estado_juego= juego_modo_UvsU(p);
+            modo_juego=PART_MODO_USUARIO_VS_AGENTE_IA;
+            estado_juego= juego_modo_JyAgente(p);
             finalizar_partida(&p);
-    }
-    else
-    {
-        nueva_partida(&p,modo_juego,comienza,Jugador_1,Jugador_2);
-        modo_juego=PART_MODO_USUARIO_VS_AGENTE_IA;
-        estado_juego= juego_modo_JyAgente(p);
-        finalizar_partida(&p);
-    }
+        }
 
+        printf("Desea seguir jugando?\n");
+        printf("1 - Si \n");
+        printf("0 - No \n\n");
+        printf("Su opcion es: ");
+        scanf("%d", &continuar_juego);
+        printf("\n");
+    }
+    printf("Gracias por jugar!\n\n");
     return 0;
 }
 
