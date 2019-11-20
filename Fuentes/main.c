@@ -1,4 +1,4 @@
-#define MAIN_PRINCIPAL
+//#define MAIN_PRINCIPAL
 
 #include "partida.h"
 #include "lista.h"
@@ -207,7 +207,7 @@ int juego_modo_JyAgente(tPartida p)
         if (p->turno_de ==PART_JUGADOR_1)
         {
             solicitar_movimiento(p);
-            imprimir_tablero(p);
+            //imprimir_tablero(p);
             p->turno_de=PART_JUGADOR_2;
         }
         else //Jugador 2 AGENTE IA
