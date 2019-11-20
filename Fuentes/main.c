@@ -205,10 +205,11 @@ int juego_modo_JyAgente(tPartida p)
     while (p->estado == PART_EN_JUEGO)
     {
         if (p->turno_de ==PART_JUGADOR_1)
-        {   printf("\ Jugador 1 es: %d",p->turno_de);
+        {
+            printf("\ Jugador 1 es: %d",p->turno_de);
             solicitar_movimiento(p);
-            //imprimir_tablero(p);
-                 int i= resultado_partida(p,p->turno_de);
+            imprimir_tablero(p);
+            int i = resultado_partida(p,p->turno_de);
 
             if (i==1)
             {
@@ -218,12 +219,13 @@ int juego_modo_JyAgente(tPartida p)
             p->turno_de=PART_JUGADOR_2;
         }
         else //Jugador 2 AGENTE IA
-        {   crear_busqueda_adversaria(&b, p);
+        {
+            crear_busqueda_adversaria(&b, p);
             printf("\n ES EL TURNO DE: %d\n",p->turno_de);
 
             //printf("\n antes de proximo mov");
             proximo_movimiento(b,&x,&y);
-           //printf("\nluego de proximo mov");
+            //printf("\nluego de proximo mov");
             printf("valor x: %d",x+1);
             printf("valor y : %d\n\n",y+1);
             nuevo_movimiento(p,x+1,y+1);
@@ -231,11 +233,12 @@ int juego_modo_JyAgente(tPartida p)
             imprimir_tablero(p);
             int i= resultado_partida(p,p->turno_de);
 
-                if (i==1)
-                {
-                    p->estado= PART_GANA_JUGADOR_2;
-                    printf("\n\nGANO EL JUGADOR: %s\n\n",p->nombre_jugador_2);
-                }
+            if (i==1)
+            {
+                p->estado= PART_GANA_JUGADOR_2;
+                printf("\n\nGANO EL JUGADOR: %s\n\n",p->nombre_jugador_2);
+            }
+            destruir_busqueda_adversaria(&b);
             p->turno_de=PART_JUGADOR_1;
         }
     }
