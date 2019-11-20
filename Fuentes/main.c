@@ -205,7 +205,7 @@ int juego_modo_JyAgente(tPartida p)
     while (en_juego==0)
     {
         if (p->turno_de ==PART_JUGADOR_1)
-        {
+        {   printf("\ Jugador 1 es: %d",p->turno_de);
             solicitar_movimiento(p);
             //imprimir_tablero(p);
             p->turno_de=PART_JUGADOR_2;

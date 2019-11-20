@@ -68,7 +68,7 @@ Las posiciones (X,Y) deben corresponderse al rango [0-2]; X representa el número
 int nuevo_movimiento(tPartida p, int mov_x, int mov_y)
 {
     int turno_de_jugador= p->turno_de;
-    printf("\nuevo mov: ES EL TURNO DE: %d",turno_de_jugador);
+    //printf("\nuevo mov: ES EL TURNO DE: %d",turno_de_jugador);
     int ret=PART_MOVIMIENTO_OK;
     int estado=p->estado;
 
@@ -83,7 +83,6 @@ int nuevo_movimiento(tPartida p, int mov_x, int mov_y)
 
             if( p->tablero->grilla[mov_x-1][mov_y-1] == PART_SIN_MOVIMIENTO)
             {
-              printf("\n que hay en: %d",p->tablero->grilla[mov_x-1][mov_y-1]);
                (p->tablero->grilla)[mov_x-1][mov_y-1]=turno_de_jugador;
             }
             else

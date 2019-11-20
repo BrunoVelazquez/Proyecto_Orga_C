@@ -82,7 +82,7 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y)
     tNodo nodo_raiz= a_raiz(arbol_b);
     tEstado estado_de_nodo_padre=(tEstado) a_recuperar(arbol_b,nodo_raiz);
     int utilidad_padre=estado_de_nodo_padre->utilidad;
-    printf("Utilidad del nodo padre: %d",utilidad_padre);
+   // printf("Utilidad del nodo padre: %d",utilidad_padre);
 
     tLista lista_hijos =a_hijos(arbol_b,nodo_raiz);
 
@@ -96,14 +96,15 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y)
 
     while (cursor<longitud_lista && corte==0)
     {
-        printf("cursor: %d",cursor);
+        printf("\n cursor: %d",cursor);
         tNodo nodo_de_lista= l_recuperar(lista_hijos,pos_hijo);
         estado_de_nodo_hijo=(tEstado) a_recuperar(arbol_b,nodo_de_lista);
-        printf("\n ");
+        printf("\n");
         imprimirr(estado_de_nodo_hijo);
         utilidad_de_nodo= estado_de_nodo_hijo->utilidad;
-        printf("\nutilidad nodo (prox m): %d",utilidad_de_nodo);
-        printf("\n ");
+        printf("\n Utilidad del padre: %d",utilidad_padre);
+        printf("\n utilidad nodo hijo: %d",utilidad_de_nodo);
+       // printf("\n ");
         if (utilidad_de_nodo==utilidad_padre){
             corte=1;}
         else
@@ -113,8 +114,7 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y)
         }
 
     }
-
-    printf("\n antes de dif");
+    printf("fin while");
     diferencia_estados(estado_de_nodo_padre, estado_de_nodo_hijo,x,y);
 
 }
@@ -145,6 +145,9 @@ static void ejecutar_min_max(tBusquedaAdversaria b){
     tNodo r = a_raiz(a);
     int jugador_max = b->jugador_max;
     int jugador_min = b->jugador_min;
+
+    printf("\n EN EJECUTAR MIN MAX, JUGADOR MAX ES: %d",jugador_max);
+     printf("\n EN EJECUTAR MIN MAX, JUGADOR MIN ES: %d",jugador_min);
     crear_sucesores_min_max(a, r, 1, IA_INFINITO_NEG, IA_INFINITO_POS, jugador_max, jugador_min);
 }
 
@@ -185,7 +188,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
 
     if( valor_utilidad(estadoN, jugador_max)!= (IA_NO_TERMINO)){ // Esta bien
          estadoN->utilidad= valor_utilidad(estadoN,jugador_max);
-    printf("ES UN ESTADO TERMINAL. Valor de utilidad: %d\n",estadoN->utilidad);}
+            printf("ES UN ESTADO TERMINAL. Valor de utilidad: %d\n",estadoN->utilidad);}
 
     if(es_max){
                 mejor_valor_sucesores= IA_INFINITO_NEG;
@@ -301,7 +304,7 @@ Computa el valor de utilidad correspondiente al estado E, y la ficha correspondi
 - IA_NO_TERMINO en caso contrario.
 **/
 static int valor_utilidad(tEstado e, int jugador_max)
-{
+{ //printf("\n JUGADOR MAX ES: %d",jugador_max);
     int ret=IA_EMPATA_MAX;
     int no_encontre_resultado=1;
 
@@ -509,7 +512,6 @@ static void diferencia_estados(tEstado anterior, tEstado nuevo, int * x, int * y
     for(i=0; i<3 && !hallado; i++){
         for(j=0; j<3 && !hallado; j++){
             if (anterior->grilla[i][j] != nuevo->grilla[i][j]){
-                     printf("\n aca");
                 *x = i;
                 *y = j;
                 hallado = 1;
