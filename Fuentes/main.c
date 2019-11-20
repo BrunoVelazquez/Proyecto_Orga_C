@@ -1,4 +1,4 @@
-//#define MAIN_PRINCIPAL
+#define MAIN_PRINCIPAL
 
 #include "partida.h"
 #include "lista.h"
@@ -212,13 +212,13 @@ int juego_modo_JyAgente(tPartida p)
         }
         else //Jugador 2 AGENTE IA
         {   crear_busqueda_adversaria(&b, p);
-            printf("\n ES EL TURNO DE: %d",p->turno_de);
+            printf("\n ES EL TURNO DE: %d\n",p->turno_de);
 
             //printf("\n antes de proximo mov");
             proximo_movimiento(b,&x,&y);
-           printf("\nluego de proximo mov");
-            printf("valor x: %d",x);
-            printf("valor y : %d\n\n",y);
+           //printf("\nluego de proximo mov");
+            printf("valor x: %d",x+1);
+            printf("valor y : %d\n\n",y+1);
             nuevo_movimiento(p,x+1,y+1);
 
             imprimir_tablero(p);

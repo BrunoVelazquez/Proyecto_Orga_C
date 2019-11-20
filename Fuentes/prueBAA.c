@@ -144,6 +144,7 @@ e = (tEstado) malloc(sizeof(struct estado));
     e->grilla[0][2]=101;
     e->grilla[1][1]=100;
     e->grilla[1][2]=100;
+    e->grilla[2][1]=100;
 
     printf("la utilidad: %d",valor_utilidad(e,100));
 
