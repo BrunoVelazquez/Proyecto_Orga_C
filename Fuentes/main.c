@@ -60,7 +60,7 @@ void solicitar_movimiento(tPartida p)
     printf("Indique su jugada en columna: ");
     scanf("%d",&y);
 
-    jugada_realizada=nuevo_movimiento(p,x,y);
+    jugada_realizada = nuevo_movimiento(p,x,y);
 
     while (jugada_realizada==PART_MOVIMIENTO_ERROR)
     {
@@ -193,7 +193,7 @@ int juego_modo_UvsU(tPartida p)
 
 int juego_modo_JyAgente(tPartida p)
 {
-int x;
+    int x;
     int y;
     int jugada_realizada;
     printf("\n Tablero: \n");
@@ -201,9 +201,8 @@ int x;
     printf("\n\n Para jugar debe indicar su movimiento en terminos de fila y columna. En ese orden \n");
 
     tBusquedaAdversaria b;
-    int en_juego=0;
 
-    while (en_juego==0)
+    while (p->estado == PART_EN_JUEGO)
     {
         if (p->turno_de ==PART_JUGADOR_1)
         {   printf("\ Jugador 1 es: %d",p->turno_de);
@@ -213,7 +212,7 @@ int x;
 
             if (i==1)
             {
-                en_juego= PART_GANA_JUGADOR_1;
+                p->estado = PART_GANA_JUGADOR_1;
                 printf("\n\nGANO EL JUGADOR: %s\n\n",p->nombre_jugador_1);
             }
             p->turno_de=PART_JUGADOR_2;
@@ -230,17 +229,15 @@ int x;
             nuevo_movimiento(p,x+1,y+1);
 
             imprimir_tablero(p);
-              int i= resultado_partida(p,p->turno_de);
+            int i= resultado_partida(p,p->turno_de);
 
                 if (i==1)
                 {
-                    en_juego= PART_GANA_JUGADOR_2;
+                    p->estado= PART_GANA_JUGADOR_2;
                     printf("\n\nGANO EL JUGADOR: %s\n\n",p->nombre_jugador_2);
                 }
             p->turno_de=PART_JUGADOR_1;
         }
-
-        if(p->estado!=PART_EN_JUEGO) en_juego=1;
     }
 }
 
