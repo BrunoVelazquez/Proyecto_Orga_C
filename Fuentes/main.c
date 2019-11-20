@@ -11,26 +11,28 @@
 
 #ifdef MAIN_PRINCIPAL
 
+static int seleccionar_modo_de_juego();
+static void indicar_nombres( char* jugador_1, char* jugador_2 , int modo_juego);
+static int seleccionar_quien_comienza(int* opcion, char * jugador_1 , char* jugador_2);
+static int seguir_jugando();
+
 void imprimir_tablero(tPartida p)
 {
     for ( int i = 0 ; i < 3 ; i++ )
     {
         for ( int j = 0 ; j < 3; j++ )
         {
-            if ((p)->tablero->grilla[i][j] ==PART_SIN_MOVIMIENTO)
+            switch ((p)->tablero->grilla[i][j])
             {
-                printf(" [   ] ");
-            }
-            else
-            {
-                if ((p)->tablero->grilla[i][j] ==PART_JUGADOR_1)
-                {
+                case PART_SIN_MOVIMIENTO:
+                    printf(" [   ] ");
+                    break;
+                case PART_JUGADOR_1:
                     printf(" [ X ] ");
-                }
-                else
-                {
+                    break;
+                case PART_JUGADOR_2:
                     printf(" [ 0 ] ");
-                }
+                    break;
             }
         }
         printf("\n");
@@ -191,7 +193,7 @@ int juego_modo_UvsU(tPartida p)
 
 int juego_modo_JyAgente(tPartida p)
 {
-    int x;
+int x;
     int y;
     int jugada_realizada;
     printf("\n Tablero: \n");
@@ -240,8 +242,6 @@ int juego_modo_JyAgente(tPartida p)
 
         if(p->estado!=PART_EN_JUEGO) en_juego=1;
     }
-
-    printf("\n termine:");
 }
 
 int main()
@@ -264,79 +264,103 @@ int main()
 
     while (continuar_juego)
     {
-        printf("Opciones de partida: \n");
-        printf("1 - Usuario vs Usuario: \n");
-        printf("2 - Usuario vs Agente IA \n\n");
-        printf("Su opcion es: ");
+        modo_juego = seleccionar_modo_de_juego();
 
-        scanf("%d", &modo_juego);
-
-        if(modo_juego==1)
-        {
-            printf("Indice nombre del Jugador 1: ");
-            scanf("%s", Jugador_1);
-            printf("Indice nombre del Jugador 2: ");
-            scanf("%s", Jugador_2);
-        }
-        else
-        {
-            if(modo_juego==2)
-            {
-                printf("Indice nombre del Jugador : ");
-                scanf("%s", Jugador_1);
-                strcpy(Jugador_2,"Agente IA");
-            }
-        }
+        indicar_nombres(Jugador_1,Jugador_2,modo_juego);
 
         printf("------------------------\n");
-        printf("\n Indice quien comenzara la partida: \n");
-        printf("1 - %s\n",Jugador_1);
-        printf("2 - %s\n",Jugador_2);
-        printf("3 - Modo Aleatorio\n");
-        printf("Su opcion es: ");
-        scanf("%d", &opcion_juego);
 
-        if (opcion_juego==1)
+        comienza = seleccionar_quien_comienza(&opcion_juego, Jugador_1,Jugador_2);
+        switch (modo_juego)
         {
-            comienza=PART_JUGADOR_1;
-        }
-        else
-        {
-            if(opcion_juego==2)
-            {
-                comienza=PART_JUGADOR_2;
-            }
-            else
-            {
-                comienza= PART_JUGADOR_RANDOM;
-            }
-        }
-
-
-        if (modo_juego==1)
-        {
+            case 1 :
                 modo_juego= PART_MODO_USUARIO_VS_USUARIO;
                 nueva_partida(&p,modo_juego,comienza,Jugador_1,Jugador_2);
                 estado_juego= juego_modo_UvsU(p);
                 finalizar_partida(&p);
-        }
-        else
-        {
-            nueva_partida(&p,modo_juego,comienza,Jugador_1,Jugador_2);
-            modo_juego=PART_MODO_USUARIO_VS_AGENTE_IA;
-            estado_juego= juego_modo_JyAgente(p);
-            finalizar_partida(&p);
+                break;
+            case 2:
+                nueva_partida(&p,modo_juego,comienza,Jugador_1,Jugador_2);
+                modo_juego=PART_MODO_USUARIO_VS_AGENTE_IA;
+                estado_juego= juego_modo_JyAgente(p);
+                finalizar_partida(&p);
+                break;
         }
 
-        printf("Desea seguir jugando?\n");
-        printf("1 - Si \n");
-        printf("0 - No \n\n");
-        printf("Su opcion es: ");
-        scanf("%d", &continuar_juego);
-        printf("\n");
+        continuar_juego = seguir_jugando();
     }
+
     printf("Gracias por jugar!\n\n");
     return 0;
 }
 
+static int seleccionar_modo_de_juego()
+{
+    int ret_modo_juego = 0;
+    printf("Opciones de partida: \n");
+    printf("1 - Usuario vs Usuario: \n");
+    printf("2 - Usuario vs Agente IA \n\n");
+    printf("Su opcion es: ");
+    scanf("%d", &ret_modo_juego);
+
+    return ret_modo_juego;
+}
+
+static void indicar_nombres( char* jugador_1, char* jugador_2 , int modo_juego)
+{
+    switch (modo_juego)
+    {
+        case 1:
+            printf("Indice nombre del Jugador 1: ");
+            scanf("%s", jugador_1);
+            printf("Indice nombre del Jugador 2: ");
+            scanf("%s", jugador_2);
+            break;
+        case 2:
+            printf("Indice nombre del Jugador : ");
+            scanf("%s", jugador_1);
+            strcpy(jugador_2,"Agente IA");
+            break;
+    }
+}
+
+static int seleccionar_quien_comienza(int * opcion, char * jugador_1 , char* jugador_2)
+{
+    int ret_comeinza = 0;
+
+    printf("\n Indice quien comenzara la partida: \n");
+    printf("1 - %s\n",jugador_1);
+    printf("2 - %s\n",jugador_2);
+    printf("3 - Modo Aleatorio\n");
+    printf("Su opcion es: ");
+    scanf("%d", opcion);
+
+    switch (*opcion)
+    {
+        case 1:
+            ret_comeinza = PART_JUGADOR_1;
+            break;
+        case 2:
+            ret_comeinza = PART_JUGADOR_2;
+            break;
+        case 3:
+            ret_comeinza = PART_JUGADOR_RANDOM;
+            break;
+    }
+
+    return ret_comeinza;
+}
+
+static int seguir_jugando()
+{
+    int continuar_juego = 0;
+    printf("Desea seguir jugando?\n");
+    printf("1 - Si \n");
+    printf("0 - No \n\n");
+    printf("Su opcion es: ");
+    scanf("%d", &continuar_juego);
+    printf("\n");
+
+    return continuar_juego;
+}
 #endif // MAIN_PRINCIPAL
