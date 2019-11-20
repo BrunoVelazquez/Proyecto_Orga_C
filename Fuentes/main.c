@@ -199,7 +199,6 @@ int juego_modo_JyAgente(tPartida p)
     printf("\n\n Para jugar debe indicar su movimiento en terminos de fila y columna. En ese orden \n");
 
     tBusquedaAdversaria b;
-    //crear_busqueda_adversaria(&b, p);
     int en_juego=0;
 
     while (en_juego==0)
@@ -208,6 +207,13 @@ int juego_modo_JyAgente(tPartida p)
         {   printf("\ Jugador 1 es: %d",p->turno_de);
             solicitar_movimiento(p);
             //imprimir_tablero(p);
+                 int i= resultado_partida(p,p->turno_de);
+
+            if (i==1)
+            {
+                en_juego= PART_GANA_JUGADOR_1;
+                printf("\n\nGANO EL JUGADOR: %s\n\n",p->nombre_jugador_1);
+            }
             p->turno_de=PART_JUGADOR_2;
         }
         else //Jugador 2 AGENTE IA
@@ -222,9 +228,20 @@ int juego_modo_JyAgente(tPartida p)
             nuevo_movimiento(p,x+1,y+1);
 
             imprimir_tablero(p);
+              int i= resultado_partida(p,p->turno_de);
+
+                if (i==1)
+                {
+                    en_juego= PART_GANA_JUGADOR_2;
+                    printf("\n\nGANO EL JUGADOR: %s\n\n",p->nombre_jugador_2);
+                }
             p->turno_de=PART_JUGADOR_1;
         }
+
+        if(p->estado!=PART_EN_JUEGO) en_juego=1;
     }
+
+    printf("\n termine:");
 }
 
 int main()

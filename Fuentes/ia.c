@@ -96,14 +96,14 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y)
 
     while (cursor<longitud_lista && corte==0)
     {
-        printf("\n cursor: %d",cursor);
+       // printf("\n cursor: %d",cursor);
         tNodo nodo_de_lista= l_recuperar(lista_hijos,pos_hijo);
         estado_de_nodo_hijo=(tEstado) a_recuperar(arbol_b,nodo_de_lista);
-        printf("\n");
-        imprimirr(estado_de_nodo_hijo);
+        //printf("\n");
+        //imprimirr(estado_de_nodo_hijo);
         utilidad_de_nodo= estado_de_nodo_hijo->utilidad;
-        printf("\n Utilidad del padre: %d",utilidad_padre);
-        printf("\n utilidad nodo hijo: %d",utilidad_de_nodo);
+       // printf("\n Utilidad del padre: %d",utilidad_padre);
+       //) printf("\n utilidad nodo hijo: %d",utilidad_de_nodo);
        // printf("\n ");
         if (utilidad_de_nodo==utilidad_padre){
             corte=1;}
@@ -114,7 +114,7 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y)
         }
 
     }
-    printf("fin while");
+    //printf("fin while");
     diferencia_estados(estado_de_nodo_padre, estado_de_nodo_hijo,x,y);
 
 }
@@ -146,8 +146,8 @@ static void ejecutar_min_max(tBusquedaAdversaria b){
     int jugador_max = b->jugador_max;
     int jugador_min = b->jugador_min;
 
-    printf("\n EN EJECUTAR MIN MAX, JUGADOR MAX ES: %d",jugador_max);
-     printf("\n EN EJECUTAR MIN MAX, JUGADOR MIN ES: %d",jugador_min);
+   // printf("\n EN EJECUTAR MIN MAX, JUGADOR MAX ES: %d",jugador_max);
+    // printf("\n EN EJECUTAR MIN MAX, JUGADOR MIN ES: %d",jugador_min);
     crear_sucesores_min_max(a, r, 1, IA_INFINITO_NEG, IA_INFINITO_POS, jugador_max, jugador_min);
 }
 
@@ -188,8 +188,8 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
 
     if( valor_utilidad(estadoN, jugador_max)!= (IA_NO_TERMINO)){ // Esta bien
          estadoN->utilidad= valor_utilidad(estadoN,jugador_max);
-            printf("ES UN ESTADO TERMINAL. Valor de utilidad: %d\n",estadoN->utilidad);}
-
+            //printf("ES UN ESTADO TERMINAL. Valor de utilidad: %d\n",estadoN->utilidad);}
+}
     if(es_max){
                 mejor_valor_sucesores= IA_INFINITO_NEG;
 
@@ -213,6 +213,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                      //
                                  //printf("\n ESTADO DEL NODO RECUPERADO LUEGO DE CS en max: %d \n",estado_nuevo_nodo->utilidad);
                     utilidad_del_estado=estado_nuevo_nodo->utilidad;
+                    // printf("\nutilidad del estado: %d",utilidad_del_estado);
                     mejor_valor_sucesores=max(mejor_valor_sucesores,utilidad_del_estado);
 
                     alpha=max(alpha,mejor_valor_sucesores);
@@ -239,10 +240,11 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
 
                         tEstado estado_nuevo_nodo= a_recuperar(a,nodo_nuevo);
                            // printf("\n luego de crear suc en min \n");
-                         //imprimirr(estado_nuevo_nodo);
+                        // imprimirr(estado_nuevo_nodo);
 
                          //  printf("\n");
                         utilidad_del_estado= estado_nuevo_nodo->utilidad;
+                        //printf("\n utilidad del estado: %d",utilidad_del_estado);
                         mejor_valor_sucesores=min(estado_nuevo_nodo->utilidad,mejor_valor_sucesores);
 
                         beta=min(beta,mejor_valor_sucesores);
@@ -267,6 +269,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
 
 
 }
+
 
 void imprimirr(tEstado e){
 {
@@ -319,13 +322,14 @@ static int valor_utilidad(tEstado e, int jugador_max)
               ((e->grilla[0][0] == jugador_max) && (e->grilla[1][1] == jugador_max) && ( e->grilla[2][2] == jugador_max))){
 
                 if(( e->grilla[0][0]) == jugador_max) {
-                        ret= IA_GANA_MAX;
+                       // ret= IA_GANA_MAX;
                         //printf("\n entre  a este if 1");
                         no_encontre_resultado=0;
+                        ret= IA_PIERDE_MAX;
                 }
                   else
-                      {
-                                ret= IA_PIERDE_MAX;
+                      {ret= IA_GANA_MAX;
+                              //  ret= IA_PIERDE_MAX;
                                 printf("\n entre a IA PIERDE MAX");
                                 no_encontre_resultado=0;
                 }
@@ -343,14 +347,15 @@ static int valor_utilidad(tEstado e, int jugador_max)
               (( e->grilla[0][1] == jugador_max) && (e->grilla[1][1]== jugador_max) && ( e->grilla[2][1]==jugador_max)) ||
               ((e->grilla[2][0] == jugador_max) && (e->grilla[1][1]==jugador_max) && ( e->grilla[0][2]== jugador_max))){
                 if((e->grilla[1][1]) == jugador_max) {
-                        ret= IA_GANA_MAX;
+                       // ret= IA_GANA_MAX;
                         // printf("\n entre  a este if 2");
                         no_encontre_resultado=0;
+                         ret= IA_PIERDE_MAX;
                 }
 
                 else
-                {
-                  ret= IA_PIERDE_MAX;
+                {                        ret= IA_GANA_MAX;
+                 // ret= IA_PIERDE_MAX;
                   printf("\n entre a IA PIERDE MAX");
                  no_encontre_resultado=0;
                 }
@@ -368,14 +373,15 @@ static int valor_utilidad(tEstado e, int jugador_max)
         if (  ((e->grilla[2][0] == jugador_max) && (e->grilla[2][1]==jugador_max) && (e->grilla[2][2] ==jugador_max)) ||
               (( e->grilla[0][2] == jugador_max) && (e->grilla[1][2]== jugador_max) && ( e->grilla[2][2]==jugador_max)) ){
                 if((e->grilla[2][2])== jugador_max) {
-                        ret= IA_GANA_MAX;
+                      //  ret= IA_GANA_MAX;
                          //printf("\n entre  a este if 3");
                         no_encontre_resultado=0;
+                           ret= IA_PIERDE_MAX;
                 }
                   else
-                {
+                {ret= IA_GANA_MAX;
                                   printf("\n entre a IA PIERDE MAX");
-                                    ret= IA_PIERDE_MAX;
+                                 //   ret= IA_PIERDE_MAX;
                                no_encontre_resultado=0;
                 }
             }
