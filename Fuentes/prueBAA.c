@@ -1,3 +1,5 @@
+//#define PRUEBAA
+
 #include <stdio.h>
 
 #include "partida.h"
@@ -8,6 +10,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
+#ifdef PRUEBAA
 
 
 int valor_utilidad(tEstado e, int jugador_max)
@@ -155,3 +159,4 @@ return 0;
 
 
 }
+#endif // PRUEBAA
