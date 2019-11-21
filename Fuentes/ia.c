@@ -177,100 +177,86 @@ Implementa la estrategia del algoritmo Min-Max con podas Alpha-Beta, a partir de
 **/
 static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min)
 {
-    int mejor_valor_sucesores;
-    int corte;
+    tEstado estado_actual = (tEstado) a_recuperar(a,n);
+    tEstado sucesor_de_cursor;
+    int valor_estado_actual = valor_utilidad(estado_actual,jugador_max);
+    int mejor_valor_sucesores = 0;
+    int valor_sucesor = 0;
+    tPosicion cursor;
+    tPosicion fin;
     tLista lista_sucesores;
-    int longitud;
-    int cursor;
-    int utilidad_del_estado;
-    tEstado estadoN= (tEstado) a_recuperar(a,n);
+    tNodo nodo_sucesor;
+    if  (valor_estado_actual != IA_NO_TERMINO)
+    {
+        if  (es_max)
+        {
+            mejor_valor_sucesores = IA_INFINITO_NEG;
 
-    if( valor_utilidad(estadoN, jugador_max)!= (IA_NO_TERMINO)){ // Esta bien
-         estadoN->utilidad= valor_utilidad(estadoN,jugador_max);
-            //printf("ES UN ESTADO TERMINAL. Valor de utilidad: %d\n",estadoN->utilidad);}
-}
-    if(es_max){
-                mejor_valor_sucesores= IA_INFINITO_NEG;
+            lista_sucesores = estados_sucesores(estado_actual,jugador_max);
+            cursor = l_primera(lista_sucesores);
+            fin = l_fin(lista_sucesores);
 
-                corte=0;
-                lista_sucesores = estados_sucesores(estadoN,jugador_max);
-                longitud= l_longitud(lista_sucesores);
-                cursor=0;
+            while   (cursor!= fin)
+            {
+                sucesor_de_cursor = l_recuperar(lista_sucesores,cursor);
+                nodo_sucesor = a_insertar(a,n,NULL,sucesor_de_cursor);
 
-                while(cursor<longitud && corte==0){
+                crear_sucesores_min_max(a,nodo_sucesor,0,alpha,beta,jugador_max,jugador_min);
+                valor_sucesor = sucesor_de_cursor->utilidad;
 
-                    tEstado estado_de_l= l_recuperar(lista_sucesores, l_primera(lista_sucesores));
-                    l_eliminar(lista_sucesores,l_primera(lista_sucesores),&fNoEliminar);
-                    tNodo nodo_nuevo= a_insertar(a, n, NULL, estado_de_l);
+                mejor_valor_sucesores = max(valor_sucesor,mejor_valor_sucesores);
 
-                    crear_sucesores_min_max(a,nodo_nuevo,0,alpha,beta,jugador_max,jugador_min);
+                alpha = max(alpha,mejor_valor_sucesores);
 
-                    tEstado estado_nuevo_nodo= (tEstado) a_recuperar(a,nodo_nuevo);
-                   // printf("\n luego de crear suc en max\n ");
-                    // imprimirr(estado_nuevo_nodo);
-                    // printf("\n");
-                     //
-                                 //printf("\n ESTADO DEL NODO RECUPERADO LUEGO DE CS en max: %d \n",estado_nuevo_nodo->utilidad);
-                    utilidad_del_estado=estado_nuevo_nodo->utilidad;
-                    // printf("\nutilidad del estado: %d",utilidad_del_estado);
-                    mejor_valor_sucesores=max(mejor_valor_sucesores,utilidad_del_estado);
+                if  (beta<=alpha)
+                    break;
 
-                    alpha=max(alpha,mejor_valor_sucesores);
-
-                    if(beta<=alpha){ corte=1;} // dejo de explorar la lista de sucesores. Podo.
-                      estadoN->utilidad= mejor_valor_sucesores;
-                    cursor=cursor+1;
-                }
+                cursor = l_siguiente(lista_sucesores,cursor);
             }
-            else{ //es jugador min.
-                    mejor_valor_sucesores= IA_INFINITO_POS;
-                    corte=0;
-                    lista_sucesores = estados_sucesores(estadoN,jugador_min);
-                    longitud= l_longitud(lista_sucesores);
-                    cursor=0;
+            estado_actual->utilidad = alpha;
+        }
+        else
+        {
+            mejor_valor_sucesores = IA_INFINITO_POS;
 
-                    while(cursor<longitud && corte==0){
+            lista_sucesores = estados_sucesores(estado_actual,jugador_max);
+            cursor = l_primera(lista_sucesores);
+            fin = l_fin(lista_sucesores);
 
-                        tEstado estado_de_l= (tEstado) l_recuperar(lista_sucesores, l_primera(lista_sucesores));
-                        l_eliminar(lista_sucesores,l_primera(lista_sucesores),&fNoEliminar);
-                        tNodo nodo_nuevo = a_insertar(a, n, NULL, estado_de_l);
+            while   (cursor!= fin)
+            {
+                sucesor_de_cursor = l_recuperar(lista_sucesores,cursor);
+                nodo_sucesor = a_insertar(a,n,NULL,sucesor_de_cursor);
 
-                        crear_sucesores_min_max(a,nodo_nuevo,1,alpha,beta,jugador_max,jugador_min);
+                crear_sucesores_min_max(a,nodo_sucesor,1,alpha,beta,jugador_max,jugador_min);
+                valor_sucesor = sucesor_de_cursor->utilidad;
 
-                        tEstado estado_nuevo_nodo= a_recuperar(a,nodo_nuevo);
-                           // printf("\n luego de crear suc en min \n");
-                        // imprimirr(estado_nuevo_nodo);
+                mejor_valor_sucesores = min(valor_sucesor,mejor_valor_sucesores);
 
-                         //  printf("\n");
-                        utilidad_del_estado= estado_nuevo_nodo->utilidad;
-                        //printf("\n utilidad del estado: %d",utilidad_del_estado);
-                        mejor_valor_sucesores=min(estado_nuevo_nodo->utilidad,mejor_valor_sucesores);
+                beta = min(beta,mejor_valor_sucesores);
 
-                        beta=min(beta,mejor_valor_sucesores);
+                if  (beta<=alpha)
+                    break;
 
-                        if(beta <= alpha)
-                                {corte=1;}
-
-                        estadoN->utilidad= mejor_valor_sucesores;
-
-                        cursor=cursor+1;
-                         //estadoN->utilidad= estado_nuevo_nodo->utilidad;
-
-                  //  printf("\n El estado del mejor valor sucesor: %d",estadoN->utilidad);
-
-                }
+                cursor = l_siguiente(lista_sucesores,cursor);
             }
+            estado_actual->utilidad = beta;
+        }
 
+        if  (cursor != fin)
+        {
+            cursor = l_siguiente(lista_sucesores, cursor);
 
-
-        l_destruir(&lista_sucesores,&fEliminar);
-
-
-
+            while   (cursor != l_fin(lista_sucesores))
+            {
+                l_eliminar(lista_sucesores, cursor, &fEliminar);
+            }
+        }
+        l_destruir(&lista_sucesores,&fNoEliminar);
+    }
 }
 
-
-void imprimirr(tEstado e){
+void imprimir(tEstado e){
 {
     for ( int i = 0 ; i < 3 ; i++ )
     {
@@ -306,118 +292,60 @@ Computa el valor de utilidad correspondiente al estado E, y la ficha correspondi
 - IA_NO_TERMINO en caso contrario.
 **/
 static int valor_utilidad(tEstado e, int jugador_max)
-{ //printf("\n JUGADOR MAX ES: %d",jugador_max);
-    int ret=IA_EMPATA_MAX;
-    int no_encontre_resultado=1;
-
-    if(no_encontre_resultado==1){
-
-     if(( e->grilla[0][0])!=PART_SIN_MOVIMIENTO){
+{
+    int toRet = 0;
+    int no_tiene_movimiento = 0;
+    int jugador_min;
 
 
+    if  (jugador_max == PART_JUGADOR_1)
+        jugador_min = PART_JUGADOR_2;
+    else
+        jugador_min = PART_JUGADOR_1;
+    if  (
+        ((e->grilla[0][0]==jugador_max) && (e->grilla[0][1]==jugador_max) &&(e->grilla[0][2]==jugador_max)) ||
+        ((e->grilla[1][0]==jugador_max) && (e->grilla[1][1]==jugador_max) &&(e->grilla[1][2]==jugador_max)) ||
+        ((e->grilla[2][0]==jugador_max) && (e->grilla[2][1]==jugador_max) &&(e->grilla[2][2]==jugador_max)) ||
 
-          if (((e->grilla[0][0] == jugador_max) && (e->grilla[0][1] == jugador_max) && ( e->grilla[0][2] == jugador_max)) ||
-              ((e->grilla[0][0] == jugador_max) && (e->grilla[1][0] == jugador_max) && ( e->grilla[2][0] == jugador_max)) ||
-              ((e->grilla[0][0] == jugador_max) && (e->grilla[1][1] == jugador_max) && ( e->grilla[2][2] == jugador_max))){
+        ((e->grilla[0][0]==jugador_max) && (e->grilla[1][0]==jugador_max) &&(e->grilla[2][0]==jugador_max)) ||
+        ((e->grilla[0][1]==jugador_max) && (e->grilla[1][1]==jugador_max) &&(e->grilla[2][1]==jugador_max)) ||
+        ((e->grilla[0][2]==jugador_max) && (e->grilla[1][2]==jugador_max) &&(e->grilla[2][2]==jugador_max)) ||
 
-                if(( e->grilla[0][0]) == jugador_max) {
-                       // ret= IA_GANA_MAX;
-                        //printf("\n entre  a este if 1");
-                        no_encontre_resultado=0;
-                        ret= IA_PIERDE_MAX;
-                }
-                  else
-                      {ret= IA_GANA_MAX;
-                              //  ret= IA_PIERDE_MAX;
-                                printf("\n entre a IA PIERDE MAX");
-                                no_encontre_resultado=0;
-                }
-            }
-        }
+        ((e->grilla[0][0]==jugador_max) && (e->grilla[1][1]==jugador_max) &&(e->grilla[2][2]==jugador_max)) ||
+        ((e->grilla[2][0]==jugador_max) && (e->grilla[1][1]==jugador_max) &&(e->grilla[0][2]==jugador_max))
+        )
+        toRet = IA_GANA_MAX;
 
+    else
+        if  (
+            ((e->grilla[0][0]==jugador_min) && (e->grilla[1][0]==jugador_min) &&(e->grilla[2][0]==jugador_min)) ||
+            ((e->grilla[0][1]==jugador_min) && (e->grilla[1][1]==jugador_min) &&(e->grilla[2][1]==jugador_min)) ||
+            ((e->grilla[0][2]==jugador_min) && (e->grilla[1][2]==jugador_min) &&(e->grilla[2][2]==jugador_min)) ||
 
-     }//fin no encontre resultado.
+            ((e->grilla[0][0]==jugador_min) && (e->grilla[1][0]==jugador_min) &&(e->grilla[2][0]==jugador_min)) ||
+            ((e->grilla[0][1]==jugador_min) && (e->grilla[1][1]==jugador_min) &&(e->grilla[2][1]==jugador_min)) ||
+            ((e->grilla[0][2]==jugador_min) && (e->grilla[1][2]==jugador_min) &&(e->grilla[2][2]==jugador_min)) ||
 
-     if(no_encontre_resultado==1){
+            ((e->grilla[0][0]==jugador_min) && (e->grilla[1][1]==jugador_min) &&(e->grilla[2][2]==jugador_min)) ||
+            ((e->grilla[2][0]==jugador_min) && (e->grilla[1][1]==jugador_min) &&(e->grilla[0][2]==jugador_min))
+            )
+            toRet = IA_PIERDE_MAX;
 
-     if((e->grilla[1][1])!=PART_SIN_MOVIMIENTO){
-
-        if(   ((e->grilla[1][0] == jugador_max) && (e->grilla[1][1]==jugador_max) && (e->grilla[1][2] ==jugador_max)) ||
-              (( e->grilla[0][1] == jugador_max) && (e->grilla[1][1]== jugador_max) && ( e->grilla[2][1]==jugador_max)) ||
-              ((e->grilla[2][0] == jugador_max) && (e->grilla[1][1]==jugador_max) && ( e->grilla[0][2]== jugador_max))){
-                if((e->grilla[1][1]) == jugador_max) {
-                       // ret= IA_GANA_MAX;
-                        // printf("\n entre  a este if 2");
-                        no_encontre_resultado=0;
-                         ret= IA_PIERDE_MAX;
-                }
-
-                else
-                {                        ret= IA_GANA_MAX;
-                 // ret= IA_PIERDE_MAX;
-                  printf("\n entre a IA PIERDE MAX");
-                 no_encontre_resultado=0;
-                }
-            }
-        }
-
-
-     }//fin no encontre resultado
-
-
-     if(no_encontre_resultado==1){
-
-     if((e->grilla[2][2])!=PART_SIN_MOVIMIENTO){
-
-        if (  ((e->grilla[2][0] == jugador_max) && (e->grilla[2][1]==jugador_max) && (e->grilla[2][2] ==jugador_max)) ||
-              (( e->grilla[0][2] == jugador_max) && (e->grilla[1][2]== jugador_max) && ( e->grilla[2][2]==jugador_max)) ){
-                if((e->grilla[2][2])== jugador_max) {
-                      //  ret= IA_GANA_MAX;
-                         //printf("\n entre  a este if 3");
-                        no_encontre_resultado=0;
-                           ret= IA_PIERDE_MAX;
-                }
-                  else
-                {ret= IA_GANA_MAX;
-                                  printf("\n entre a IA PIERDE MAX");
-                                 //   ret= IA_PIERDE_MAX;
-                               no_encontre_resultado=0;
-                }
-            }
-        }
-
-
-    } //fin no encontre_resultado
-
-        //CASO DE IA NO TERMINO
-    if (no_encontre_resultado==1)
-    {
-        int i=0;
-        int j=0;
-        while ( i < 3 && no_encontre_resultado==1 )
+        else
         {
-            while( j < 3 && no_encontre_resultado==1 )
-            {
-                if (e->grilla[i][j]!= PART_SIN_MOVIMIENTO)
-                {
-                    j=j+1;
-                }
-                else
-                {
-                    no_encontre_resultado=0; //quiere decir que IA NO TERMINO
-                }
-            }
-            j=0;
-            i=i+1;
+            for (int i = 0 ; i < 3 && !no_tiene_movimiento ; i++)
+                for (int j = 0 ; i < 3 && !no_tiene_movimiento ; j++)
+                    if (e->grilla[i][j] == PART_SIN_MOVIMIENTO)
+                        no_tiene_movimiento = 1;
+
+            if (no_tiene_movimiento)
+                toRet = IA_EMPATA_MAX;
+            else
+                toRet = IA_NO_TERMINO;
+
         }
-        if (no_encontre_resultado==0)
-        {
-            ret=IA_NO_TERMINO;
-        }
-    }
-   // printf("\n RET DE VALOR UTILIDAD: %d \n",ret);
-    //printf("  con ficha: %d",jugador_max);
-    return ret;
+    return toRet;
+
 }
 
 
@@ -441,16 +369,12 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador)
     int columna=0;
     int valor_grilla;
 
-    srand(time(NULL));
-
     for ( fila ; fila < 3 ; fila++ )
     {
         for ( columna ; columna < 3 ; columna++ )
         {
             valor_grilla=e->grilla[fila][columna];
             //printf("\n Valor grilla(list estados sucesores: %d",valor_grilla);
-
-
             if (valor_grilla==PART_SIN_MOVIMIENTO)   // Es una casilla libre
             {
                // printf("\n Se inserta en fila:  %d",fila);
@@ -463,12 +387,11 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador)
 
                    //numero random
                 int numero_random= rand()%2;
-
-                if (numero_random==1)
+                if (numero_random)  //1
                 {
-                     l_insertar(lista_con_sucesores,l_fin(lista_con_sucesores),estado_clon);
+                    l_insertar(lista_con_sucesores,l_fin(lista_con_sucesores),estado_clon);
                 }
-                else
+                else                //0
                 {
                     l_insertar(lista_con_sucesores,l_primera(lista_con_sucesores),estado_clon);
                 }
