@@ -161,8 +161,6 @@ static void ejecutar_min_max(tBusquedaAdversaria b){
     int jugador_max = b->jugador_max;
     int jugador_min = b->jugador_min;
 
-    printf("\n EN EJECUTAR MIN MAX, JUGADOR MAX ES: %d",jugador_max);
-    printf("\n EN EJECUTAR MIN MAX, JUGADOR MIN ES: %d",jugador_min);
     crear_sucesores_min_max(a, r, 1, IA_INFINITO_NEG, IA_INFINITO_POS, jugador_max, jugador_min);
 }
 
@@ -177,6 +175,8 @@ Implementa la estrategia del algoritmo Min-Max con podas Alpha-Beta, a partir de
 **/
 static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min)
 {
+    printf("\n EN EJECUTAR MIN MAX, JUGADOR MAX ES: %d",jugador_max);
+    printf("\n EN EJECUTAR MIN MAX, JUGADOR MIN ES: %d",jugador_min);
     tEstado estado_actual = (tEstado) a_recuperar(a,n);
     tEstado sucesor_de_cursor;
     int valor_estado_actual = valor_utilidad(estado_actual,jugador_max);
@@ -186,6 +186,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
     tPosicion fin;
     tLista lista_sucesores;
     tNodo nodo_sucesor;
+    int corte =0;
 
     if  (valor_estado_actual != IA_NO_TERMINO)
     {
@@ -197,7 +198,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
             cursor = l_primera(lista_sucesores);
             fin = l_fin(lista_sucesores);
 
-            while   (cursor!= fin)
+            while   (cursor!= fin && !corte)
             {
                 sucesor_de_cursor = l_recuperar(lista_sucesores,cursor);
                 nodo_sucesor = a_insertar(a,n,NULL,sucesor_de_cursor);
@@ -210,7 +211,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                 alpha = max(alpha,mejor_valor_sucesores);
 
                 if  (beta<=alpha)
-                    break;
+                    corte = 1;
 
                 cursor = l_siguiente(lista_sucesores,cursor);
             }
@@ -220,11 +221,11 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
         {
             mejor_valor_sucesores = IA_INFINITO_POS;
 
-            lista_sucesores = estados_sucesores(estado_actual,jugador_max);
+            lista_sucesores = estados_sucesores(estado_actual,jugador_min);
             cursor = l_primera(lista_sucesores);
             fin = l_fin(lista_sucesores);
 
-            while   (cursor!= fin)
+            while   (cursor!= fin && !corte)
             {
                 sucesor_de_cursor = l_recuperar(lista_sucesores,cursor);
                 nodo_sucesor = a_insertar(a,n,NULL,sucesor_de_cursor);
@@ -237,7 +238,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
                 beta = min(beta,mejor_valor_sucesores);
 
                 if  (beta<=alpha)
-                    break;
+                    corte = 1 ;;
 
                 cursor = l_siguiente(lista_sucesores,cursor);
             }
@@ -269,7 +270,7 @@ Computa el valor de utilidad correspondiente al estado E, y la ficha correspondi
 static int valor_utilidad(tEstado e, int jugador_max)
 {
     int toRet = 0;
-    int no_tiene_movimiento = 0;
+    int tablero_completado = 1;
     int jugador_min;
 
 
@@ -308,12 +309,12 @@ static int valor_utilidad(tEstado e, int jugador_max)
 
         else
         {
-            for (int i = 0 ; i < 3 && !no_tiene_movimiento ; i++)
-                for (int j = 0 ; i < 3 && !no_tiene_movimiento ; j++)
+            for (int i = 0 ; i < 3 && !tablero_completado; i++)
+                for (int j = 0 ; i < 3 && !tablero_completado; j++)
                     if (e->grilla[i][j] == PART_SIN_MOVIMIENTO)
-                        no_tiene_movimiento = 1;
+                        tablero_completado = 0;
 
-            if (no_tiene_movimiento)
+            if (tablero_completado)
                 toRet = IA_EMPATA_MAX;
             else
                 toRet = IA_NO_TERMINO;
