@@ -73,6 +73,8 @@ void a_eliminar(tArbol arbol, tNodo nodo, void (*fEliminar)(tElemento))
             arbol->raiz = nueva_raiz;
 
         }
+        if (cant_hijos == 0)
+            arbol->raiz == NULL;
     }
     else                                                            //De lo contrario (No es la raiz)
     {

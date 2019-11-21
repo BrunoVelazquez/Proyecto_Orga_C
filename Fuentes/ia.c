@@ -13,6 +13,22 @@ static int valor_utilidad(tEstado e, int jugador_max);
 static tLista estados_sucesores(tEstado e, int ficha_jugador);
 static void diferencia_estados(tEstado anterior, tEstado nuevo, int * x, int * y);
 static tEstado clonar_estado(tEstado e);
+int max(int valor1,int valor2){
+
+int ret = valor1;
+    if(valor1<=valor2)
+        ret= valor2;
+return ret;
+}
+
+int min(int valor1,int valor2){
+
+    int ret = valor2;
+        if(valor1<=valor2)
+            ret= valor1;
+
+    return ret;
+}
 
 void fNoEliminar(tElemento e){};
 void fEliminar(tElemento e){
@@ -116,7 +132,6 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y)
     }
     //printf("fin while");
     diferencia_estados(estado_de_nodo_padre, estado_de_nodo_hijo,x,y);
-
 }
 
 /**
@@ -149,22 +164,6 @@ static void ejecutar_min_max(tBusquedaAdversaria b){
    // printf("\n EN EJECUTAR MIN MAX, JUGADOR MAX ES: %d",jugador_max);
     // printf("\n EN EJECUTAR MIN MAX, JUGADOR MIN ES: %d",jugador_min);
     crear_sucesores_min_max(a, r, 1, IA_INFINITO_NEG, IA_INFINITO_POS, jugador_max, jugador_min);
-}
-
-int max(int valor1,int valor2){
-
-int ret;
-    if(valor1<=valor2) ret= valor2;
-    else ret=valor1;
-return ret;
-}
-
-int min(int valor1,int valor2){
-
-int ret;
-    if(valor1<=valor2) ret= valor1;
-    else ret=valor2;
-return ret;
 }
 
 /**

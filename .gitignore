@@ -57,4 +57,4 @@ dkms.conf
 *.depend
 *.json
 *.layout
-Proyecto_Orga_C.cbp
+*.cbp
