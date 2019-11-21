@@ -161,8 +161,8 @@ static void ejecutar_min_max(tBusquedaAdversaria b){
     int jugador_max = b->jugador_max;
     int jugador_min = b->jugador_min;
 
-   // printf("\n EN EJECUTAR MIN MAX, JUGADOR MAX ES: %d",jugador_max);
-    // printf("\n EN EJECUTAR MIN MAX, JUGADOR MIN ES: %d",jugador_min);
+    printf("\n EN EJECUTAR MIN MAX, JUGADOR MAX ES: %d",jugador_max);
+    printf("\n EN EJECUTAR MIN MAX, JUGADOR MIN ES: %d",jugador_min);
     crear_sucesores_min_max(a, r, 1, IA_INFINITO_NEG, IA_INFINITO_POS, jugador_max, jugador_min);
 }
 
@@ -186,6 +186,7 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
     tPosicion fin;
     tLista lista_sucesores;
     tNodo nodo_sucesor;
+
     if  (valor_estado_actual != IA_NO_TERMINO)
     {
         if  (es_max)
@@ -256,32 +257,6 @@ static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, in
     }
 }
 
-void imprimir(tEstado e){
-{
-    for ( int i = 0 ; i < 3 ; i++ )
-    {
-        for ( int j = 0 ; j < 3; j++ )
-        {
-            if (e->grilla[i][j]==PART_SIN_MOVIMIENTO)
-            {
-                printf(" [   ] ");
-            }
-            else
-            {
-                if (e->grilla[i][j] ==PART_JUGADOR_1)
-                {
-                    printf(" [ X ] ");
-                }
-                else
-                {
-                    printf(" [ 0 ] ");
-                }
-            }
-        }
-        printf("\n");
-    }
-}
-}
 
 /**
 >>>>>  A IMPLEMENTAR   <<<<< LISTOOOOOOOOOOO

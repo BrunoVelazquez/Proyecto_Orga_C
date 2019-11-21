@@ -164,11 +164,8 @@ int juego_modo_JyAgente(tPartida p)
             printf("\ Jugador 1 es: %d",p->turno_de);
             solicitar_movimiento(p);
             imprimir_tablero(p);
-<<<<<<< HEAD
-                 int i= resultado_partida(p,p->turno_de);
-=======
+
             int i = resultado_partida(p,p->turno_de);
->>>>>>> 4ddd6f48f65286e309a4ae95d8ffd980fba7490e
 
             if (i==1)
             {
