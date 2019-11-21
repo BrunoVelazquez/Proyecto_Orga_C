@@ -74,69 +74,24 @@ void solicitar_movimiento(tPartida p)
 
 int resultado_partida(tPartida p,int jugador)
 {
-    int retornar=0;
-    int no_encontre_resultado=1;
+    int toRet = 0;
 
-    if (no_encontre_resultado==1)
+    if  (
+        ((p->tablero->grilla[0][0] == jugador) && (p->tablero->grilla[0][1] == jugador) &&(p->tablero->grilla[0][2]==jugador)) ||
+        ((p->tablero->grilla[1][0] == jugador) && (p->tablero->grilla[1][1] == jugador) &&(p->tablero->grilla[1][2]==jugador)) ||
+        ((p->tablero->grilla[2][0] == jugador) && (p->tablero->grilla[2][1] == jugador) &&(p->tablero->grilla[2][2]==jugador)) ||
+
+        ((p->tablero->grilla[0][0] == jugador) && (p->tablero->grilla[1][0] == jugador) &&(p->tablero->grilla[2][0]==jugador)) ||
+        ((p->tablero->grilla[0][1] == jugador) && (p->tablero->grilla[1][1] == jugador) &&(p->tablero->grilla[2][1]==jugador)) ||
+        ((p->tablero->grilla[0][2] == jugador) && (p->tablero->grilla[1][2] == jugador) &&(p->tablero->grilla[2][2]==jugador)) ||
+
+        ((p->tablero->grilla[0][0] == jugador) && (p->tablero->grilla[1][1] == jugador) &&(p->tablero->grilla[2][2]==jugador)) ||
+        ((p->tablero->grilla[2][0] == jugador) && (p->tablero->grilla[1][1] == jugador) &&(p->tablero->grilla[0][2]==jugador))
+        )
     {
-
-        if (p->tablero->grilla[0][0]!= PART_SIN_MOVIMIENTO)
-        {
-
-            if (((p->tablero->grilla[0][0] == jugador) && (p->tablero->grilla[0][1] == jugador) &&(p->tablero->grilla[0][2]==jugador)) ||
-                ((p->tablero->grilla[0][0] == jugador) && (p->tablero->grilla[1][0] == jugador) &&(p->tablero->grilla[2][0]==jugador)) ||
-                ((p->tablero->grilla[0][0] == jugador) && (p->tablero->grilla[1][1] == jugador) &&(p->tablero->grilla[2][2]==jugador)))
-            {
-
-                if( p->tablero->grilla[0][0] == jugador)
-                {
-                    retornar=1;
-                    no_encontre_resultado=0;
-                }
-            }
-
-        }
+        toRet = 1;
     }
-
-    if (no_encontre_resultado==1)
-    {
-
-        if (p->tablero->grilla[1][1]!= PART_SIN_MOVIMIENTO)
-        {
-
-            if (((p->tablero->grilla[1][0] == jugador) && (p->tablero->grilla[1][1] == jugador) &&(p->tablero->grilla[1][2]==jugador)) ||
-                ((p->tablero->grilla[0][1] == jugador) && (p->tablero->grilla[1][1] == jugador) &&(p->tablero->grilla[2][1]==jugador)) ||
-                ((p->tablero->grilla[2][0] == jugador) && (p->tablero->grilla[1][1] == jugador) &&(p->tablero->grilla[0][2]==jugador)))
-            {
-
-                if (p->tablero->grilla[1][1] == jugador)
-                {
-                    retornar=1;
-                    no_encontre_resultado=0;
-                }
-            }
-        }
-    }
-
-    if (no_encontre_resultado==1)
-    {
-
-        if (p->tablero->grilla[2][2]!= PART_SIN_MOVIMIENTO)
-        {
-
-            if (((p->tablero->grilla[2][0] == jugador) && (p->tablero->grilla[2][1] == jugador) &&(p->tablero->grilla[2][2]==jugador)) ||
-                ((p->tablero->grilla[0][2] == jugador) && (p->tablero->grilla[1][2] == jugador) &&(p->tablero->grilla[2][2]==jugador)))
-            {
-                if( p->tablero->grilla[2][2] == jugador)
-                {
-                    retornar=1;
-                    no_encontre_resultado=0;
-                }
-            }
-        }
-    }
-    return retornar;
-
+    return toRet;
 }
 
 int juego_modo_UvsU(tPartida p)
@@ -167,7 +122,7 @@ int juego_modo_UvsU(tPartida p)
         }
         else
         {
-               // (p)->turno_de == PART_JUGADOR_2
+                //(p)->turno_de == PART_JUGADOR_2
                 solicitar_movimiento(p);
                 imprimir_tablero(p);
                 int i= resultado_partida(p,p->turno_de);
@@ -252,6 +207,7 @@ int main()
     int comienza;
     tPartida p;
 
+
     int continuar_juego = 1;
 
     int estado_juego;
@@ -261,6 +217,7 @@ int main()
 
     printf("\n TA-TE-TI \n");
     printf("------------------------\n");
+
 
     while (continuar_juego)
     {
