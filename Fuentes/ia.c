@@ -98,7 +98,6 @@ void proximo_movimiento(tBusquedaAdversaria b, int * x, int * y)
     tNodo nodo_raiz= a_raiz(arbol_b);
     tEstado estado_de_nodo_padre=(tEstado) a_recuperar(arbol_b,nodo_raiz);
     int utilidad_padre=estado_de_nodo_padre->utilidad;
-   // printf("Utilidad del nodo padre: %d",utilidad_padre);
 
     tLista lista_hijos =a_hijos(arbol_b,nodo_raiz);
 
@@ -169,74 +168,74 @@ Implementa la estrategia del algoritmo Min-Max con podas Alpha-Beta, a partir de
 - JUGADOR_MAX y JUGADOR_MIN indican las fichas con las que juegan los respectivos jugadores.
 **/
 static void crear_sucesores_min_max(tArbol a, tNodo n, int es_max, int alpha, int beta, int jugador_max, int jugador_min){
-    ///Guardo en una variable auxiliar el elemento del nodo encontrado en el arbol y el nodo pasados por paramentro.
-    ///Ejecuto la funcion minimax pasando por parametro el elemento del nodo anteriormente guardado,el entero que identifica al jugador y dos variables que identifican el valor de utilidad.
-   ///Declaracion de variables.
-    tEstado estado=n->elemento;
+
+    tEstado estado=(tEstado) a_recuperar(a,n);
     tLista sucesores;
     tPosicion posActualSucesores;
-    tPosicion finSucesores;
-    tEstado sucesorAct;
-    int encontro = 0;
+    tPosicion fin_lista;
+    tEstado estado_sucesor;
+    tNodo nodo_nuevo;
+    int poda = 0;
+    int mejor_valor_sucesores;
+    tPosicion cursor;
 
-    ///Si es un estado final devuelve la utilidad.
+
     estado->utilidad=valor_utilidad(estado,jugador_max);
+
     if(estado->utilidad==IA_NO_TERMINO){
-        ///Si esJugadorMax !=0 significa que es un estado max.
+
         if(es_max){
-            ///Inicializo las variables.
+            mejor_valor_sucesores = IA_INFINITO_NEG;
             sucesores = estados_sucesores(estado,jugador_max);
-            posActualSucesores = l_primera(sucesores);
-            finSucesores = l_fin(sucesores);
-            ///Exploro la lista de estados hijos del estado actual.
-            while(posActualSucesores!=finSucesores&&!encontro){
-                    ///Recupero el estado de la posicion de la lista de hijos.
-                    sucesorAct = (tEstado) l_recuperar(sucesores,posActualSucesores);
-                    ///Accedo a una instancia recusiva con el estado hijo correspondiente a  la pos actual de la lista de hijos cambiando que ahora es un estado min.
-                    sucesorAct->utilidad=valor_utilidad(sucesorAct,jugador_max);
-                    tNodo hijoActual = a_insertar(a,n,NULL,sucesorAct);
-                    crear_sucesores_min_max(a,hijoActual,0,alpha,beta,jugador_max,jugador_min);//Este esta bien.Creo, le paso 0 para que vaya al else.
-                    ///Si la utilidad del hijo es mayor a la anteriormente calculada la reemplazo por el nuevo valor.
-                    tEstado estadoSucesor = hijoActual->elemento;
-                    //if(estadoSucesor->utilidad<mejorValorSucesores)
-                    //    mejorValorSucesores= caca->utilidad;
-                    ///Si alpha es menor al nuevo valor de utilidad actualizo el valor de alpha con el nuevo valor de utilidad.
-                    if(alpha<estadoSucesor->utilidad)
-                        alpha = estadoSucesor->utilidad;
-                    ///Si beta es menor  o igual a alpha, podo.
-                    if(beta<=alpha){
-                        encontro = 1;
+            cursor = l_primera(sucesores);
+            fin_lista = l_fin(sucesores);
+
+            while(cursor!=fin_lista && !poda){
+
+                estado_sucesor = (tEstado) l_recuperar(sucesores,cursor);
+                estado_sucesor->utilidad = valor_utilidad(estado_sucesor,jugador_max);
+                nodo_nuevo = a_insertar(a,n,NULL,estado_sucesor);
+
+                crear_sucesores_min_max(a,nodo_nuevo,0,alpha,beta,jugador_max,jugador_min);
+
+                tEstado estado_del_nodo = (tEstado)a_recuperar(a,nodo_nuevo);
+
+                mejor_valor_sucesores = max(estado_del_nodo->utilidad,mejor_valor_sucesores);
+                alpha = max(alpha,mejor_valor_sucesores);
+
+                if(beta<=alpha){
+                        poda = 1;
                     }
-                    ///Actualizo la posicion en la lista de hijos.
-                    posActualSucesores = l_siguiente(sucesores,posActualSucesores);
-            }
-            estado->utilidad = alpha;
+                cursor = l_siguiente(sucesores,cursor);
+                }
+                estado->utilidad = alpha;
         }
-        ///Si esJugadorMax =0 significa que es un estado min.
+
         else{
-            ///Inicializo las variables.
-            sucesores = estados_sucesores(estado,jugador_min);
-            posActualSucesores = l_primera(sucesores);
-            finSucesores = l_fin(sucesores);
-            ///Exploro la lista de estados hijos del estado actual.
-            while(posActualSucesores!=finSucesores&&!encontro){
-                    ///Recupero el estado de la posicion de la lista de hijos.
-                    sucesorAct = (tEstado) l_recuperar(sucesores,posActualSucesores);
-                    ///Accedo a una instancia recusiva con el estado hijo correspondiente a  la pos actual de la lista de hijos cambiando que ahora es un estado max.
-                    tNodo hijoActual =a_insertar(a,n,NULL,sucesorAct);
-                    sucesorAct->utilidad=valor_utilidad(sucesorAct,jugador_max);
-                    crear_sucesores_min_max(a,hijoActual,1,alpha,beta,jugador_max,jugador_min);//Este le paso para que en el sig vaya al if y no al else
-                    ///Si la utilidad del hijo es menor a la anteriormente calculada la reemplazo por el nuevo valor.
-                    tEstado estadoSucesor=hijoActual->elemento;
-                    ///Si beta es mayor al nuevo valor de utilidad actualizo el valor de alpha con el nuevo valor de utilidad.
-                    if(estadoSucesor->utilidad<beta)
-                        beta = estadoSucesor->utilidad;
-                    ///Si beta es menor  o igual a alpha, podo.
+                mejor_valor_sucesores = IA_INFINITO_POS;
+                sucesores = estados_sucesores(estado,jugador_min);
+                cursor = l_primera(sucesores);
+                fin_lista= l_fin(sucesores);
+
+                while(cursor!=fin_lista && !poda){
+
+                    estado_sucesor = (tEstado) l_recuperar(sucesores,cursor);
+                    estado_sucesor->utilidad = valor_utilidad(estado_sucesor,jugador_max);
+                    nodo_nuevo = a_insertar(a,n,NULL,estado_sucesor);
+
+                    crear_sucesores_min_max(a,nodo_nuevo,1,alpha,beta,jugador_max,jugador_min);//Este le paso para que en el sig vaya al if y no al else
+
+                    tEstado estado_del_nodo = (tEstado)a_recuperar(a,nodo_nuevo);
+
+                    mejor_valor_sucesores = min(estado_del_nodo->utilidad,mejor_valor_sucesores);
+
+                    beta = min(beta,mejor_valor_sucesores);
+
                     if(beta<=alpha){
-                        encontro = 1;
+                       poda = 1;
                     }
-                    ///Actualizo la posicion en la lista de hijos.
-                    posActualSucesores = l_siguiente(sucesores,posActualSucesores);
+
+                   cursor= l_siguiente(sucesores,cursor);
             }
             estado->utilidad = beta;
         }
@@ -255,106 +254,56 @@ Computa el valor de utilidad correspondiente al estado E, y la ficha correspondi
 - IA_NO_TERMINO en caso contrario.
 **/
 static int valor_utilidad(tEstado e, int jugador_max){
-    ///Retorno el entero conseguido al ejecutar la funcion gano con el estado pasado por parametro
-    ///y la variable que representa al jugador tambien pasada por parametro.
-    int gano1=0;
-    int gano2=0;
 
-    int ficha1=jugador_max;
-    int ficha2=0;
+    int i;
+    int j;
+    int encontre_lugar_vacio=1;
+    int jugador_min = (jugador_max == PART_JUGADOR_1) ? PART_JUGADOR_2 : PART_JUGADOR_1;
 
-    int espaciosVacios=0;
-    int i=0;
+    if((e->grilla[0][0] == jugador_max && e->grilla[0][1] == jugador_max && e->grilla[0][2] == jugador_max) ||
+       (e->grilla[1][0] == jugador_max && e->grilla[1][1] == jugador_max && e->grilla[1][2] == jugador_max) ||
+       (e->grilla[2][0] == jugador_max && e->grilla[2][1] == jugador_max && e->grilla[2][2] == jugador_max) ||
 
-    if(jugador_max==PART_JUGADOR_1)
-        ficha2=PART_JUGADOR_2;
-    else{
-        ficha2=PART_JUGADOR_1;
-    }
-        ///Chequeo las filas.
-        while(gano1!=3 && gano2!=3 && i<3){
-            for(int j=0; j<3; j++){
-                ///si esta la ficha, aumento su variable gano
-                if(e->grilla[i][j]==ficha1){
-                    gano1++;
-                }
-                if(e->grilla[i][j]==ficha2){
-                    gano2++;
-                }
-                if(e->grilla[i][j]==PART_SIN_MOVIMIENTO){
-                    espaciosVacios++;
-                }
+       //verticales
+       (e->grilla[0][0] == jugador_max && e->grilla[1][0] == jugador_max && e->grilla[2][0] == jugador_max) ||
+       (e->grilla[0][1] == jugador_max && e->grilla[1][1] == jugador_max && e->grilla[2][1] == jugador_max) ||
+       (e->grilla[0][2] == jugador_max && e->grilla[1][2] == jugador_max && e->grilla[2][2] == jugador_max) ||
+
+       //diagonales
+       (e->grilla[0][0] == jugador_max && e->grilla[1][1] == jugador_max && e->grilla[2][2] == jugador_max) ||
+       (e->grilla[2][0] == jugador_max && e->grilla[1][1] == jugador_max && e->grilla[0][2] == jugador_max)
+       )
+       return IA_GANA_MAX;
+
+    else if(    (e->grilla[0][0] == jugador_min && e->grilla[0][1] == jugador_min && e->grilla[0][2] == jugador_min) ||
+                (e->grilla[1][0] == jugador_min && e->grilla[1][1] == jugador_min && e->grilla[1][2] == jugador_min) ||
+                (e->grilla[2][0] == jugador_min && e->grilla[2][1] == jugador_min && e->grilla[2][2] == jugador_min) ||
+
+                (e->grilla[0][0] == jugador_min && e->grilla[1][0] == jugador_min && e->grilla[2][0] == jugador_min) ||
+                (e->grilla[0][1] == jugador_min && e->grilla[1][1] == jugador_min && e->grilla[2][1] == jugador_min) ||
+                (e->grilla[0][2] == jugador_min && e->grilla[1][2] == jugador_min && e->grilla[2][2] == jugador_min) ||
+
+                (e->grilla[0][0] == jugador_min && e->grilla[1][1] == jugador_min && e->grilla[2][2] == jugador_min) ||
+                (e->grilla[2][0] == jugador_min && e->grilla[1][1] == jugador_min && e->grilla[0][2] == jugador_min)
+            )
+       return IA_PIERDE_MAX;
+
+    else{ //chequea si la grilla esta llena
+        for (i = 0; i < 3; i++) {
+            for ( j = 0; j < 3; j++) {
+                if (e->grilla[i][j] == PART_SIN_MOVIMIENTO)
+                    encontre_lugar_vacio = 0;
             }
-            if(gano1>=3)
-                return IA_GANA_MAX;
-            if(gano2>=3)
-                return IA_PIERDE_MAX;
-            gano2=0;
-            gano1=0;
-            i++;
         }
 
-        int j=0;
-        ///Chequeo las columnas.
-        while(gano1!=3 && gano2!=3 && j<3){
-            for(i=0; i<3; i++){
-                ///si esta la ficha, aumento su variable gano
-                if(e->grilla[i][j]==ficha1)
-                    gano1++;
-                if(e->grilla[i][j]==ficha2)
-                    gano2++;
-                if(e->grilla[i][j]==PART_SIN_MOVIMIENTO)
-                    espaciosVacios++;
-                }
-            if(gano1>=3)
-                return IA_GANA_MAX;
-            if(gano2>=3)
-                return IA_PIERDE_MAX;
-            gano1=0;
-            gano2=0;
-            j++;
-        }
-        //diagonal hardcodeada x2
-        i=0; j=0;
-        while(j<3 && i<3){
-             ///si esta la ficha, aumento su variable gano
-            if(e->grilla[i][j]==ficha1)
-                gano1++;
-            if(e->grilla[i][j]==ficha2)
-                gano2++;
-            if(e->grilla[i][j]==PART_SIN_MOVIMIENTO)
-                espaciosVacios++;
-            i++;
-            j++;
-        }
-        if(gano1>=3)
-            return IA_GANA_MAX; //gano1
-        if(gano2>=3)
-            return IA_PIERDE_MAX;
-
-        gano1=0;
-        gano2=0;
-        i=-1;
-        j=3;
-        while(j>0 && i<3){
-            j--;
-            i++;
-            ///si esta la ficha, aumento su variable gano
-            if(e->grilla[i][j]==ficha1)
-                gano1++;
-            if(e->grilla[i][j]==ficha2)
-                gano2++;
-            if(e->grilla[i][j]==PART_SIN_MOVIMIENTO)
-                espaciosVacios++;
-        }
-        if(gano1>=3)
-            return IA_GANA_MAX; //gano1
-        if(gano2>=3)
-            return IA_PIERDE_MAX;
-        if(espaciosVacios==0)
+        if(encontre_lugar_vacio == 0)
+            return IA_NO_TERMINO;
+        else
             return IA_EMPATA_MAX;
-    return IA_NO_TERMINO;
+    }
+
 }
+
 /**
 >>>>>  A IMPLEMENTAR   <<<<<   CORREGIDO
 Computa y retorna una lista con aquellos estados que representan estados sucesores al estado E.
@@ -375,9 +324,9 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador)
     int columna=0;
     int valor_grilla;
 
-    for ( fila ; fila < 3 ; fila++ )
+    for ( fila=0 ; fila < 3 ; fila++ )
     {
-        for ( columna ; columna < 3 ; columna++ )
+        for ( columna=0 ; columna < 3 ; columna++ )
         {
             valor_grilla=e->grilla[fila][columna];
 
@@ -397,10 +346,8 @@ static tLista estados_sucesores(tEstado e, int ficha_jugador)
                 {
                     l_insertar(lista_con_sucesores,l_primera(lista_con_sucesores),estado_clon);
                 }
-                tEstado pos=l_recuperar(lista_con_sucesores,l_primera(lista_con_sucesores));
             }
         }
-        columna=0;
     }
     return lista_con_sucesores;
 }

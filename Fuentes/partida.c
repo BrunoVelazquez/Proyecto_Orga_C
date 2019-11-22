@@ -68,7 +68,6 @@ Las posiciones (X,Y) deben corresponderse al rango [0-2]; X representa el número
 int nuevo_movimiento(tPartida p, int mov_x, int mov_y)
 {
     int turno_de_jugador= p->turno_de;
-    //printf("\nuevo mov: ES EL TURNO DE: %d",turno_de_jugador);
     int ret=PART_MOVIMIENTO_OK;
     int estado=p->estado;
 

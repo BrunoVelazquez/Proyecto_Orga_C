@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #ifdef MAIN_PRINCIPAL
 
@@ -48,11 +49,11 @@ void solicitar_movimiento(tPartida p)
 
         if (turno==PART_JUGADOR_1)
         {
-            printf("\n\n\n Turno de: %s",p->nombre_jugador_1);
+            printf("\n\n\n ES EL TURNO DE: %s",p->nombre_jugador_1);
         }
         else
         {
-            printf("\n\n\n Turno de: %s",p->nombre_jugador_2);
+            printf("\n\n\n ES EL TURNO DE: %s",p->nombre_jugador_2);
         }
 
     printf("\nIndique su jugada en fila: ");
@@ -94,7 +95,7 @@ int resultado_partida(tPartida p,int jugador)
     return toRet;
 }
 
-int juego_modo_UvsU(tPartida p)
+void juego_modo_UvsU(tPartida p)
 {
     int control_partida=PART_EN_JUEGO;
     int i=1;
@@ -121,8 +122,7 @@ int juego_modo_UvsU(tPartida p)
 
         }
         else
-        {
-                //(p)->turno_de == PART_JUGADOR_2
+        {       //(p)->turno_de == PART_JUGADOR_2
                 solicitar_movimiento(p);
                 imprimir_tablero(p);
                 int i= resultado_partida(p,p->turno_de);
@@ -143,25 +143,24 @@ int juego_modo_UvsU(tPartida p)
         printf("\n\nFUE EMPATE!\n\n");
     }
 
-    return 0;
 }
 
-int juego_modo_JyAgente(tPartida p)
+void juego_modo_JyAgente(tPartida p)
 {
     int x;
     int y;
-    int jugada_realizada;
+
     printf("\n Tablero: \n");
     imprimir_tablero(p);
+    int i=1;
     printf("\n\n Para jugar debe indicar su movimiento en terminos de fila y columna. En ese orden \n");
 
     tBusquedaAdversaria b;
 
-    while (p->estado == PART_EN_JUEGO)
+    while (p->estado == PART_EN_JUEGO  && i<10)
     {
         if (p->turno_de ==PART_JUGADOR_1)
         {
-            printf("\ Jugador 1 es: %d",p->turno_de);
             solicitar_movimiento(p);
             imprimir_tablero(p);
 
@@ -177,13 +176,10 @@ int juego_modo_JyAgente(tPartida p)
         else //Jugador 2 AGENTE IA
         {
             crear_busqueda_adversaria(&b, p);
-            printf("\n ES EL TURNO DE: %d\n",p->turno_de);
+            printf("\n ES EL TURNO DE: %s\n",p->nombre_jugador_2);
 
-            //printf("\n antes de proximo mov");
             proximo_movimiento(b,&x,&y);
-            //printf("\nluego de proximo mov");
-            printf("valor x: %d",x+1);
-            printf("valor y : %d\n\n",y+1);
+
             nuevo_movimiento(p,x+1,y+1);
 
             imprimir_tablero(p);
@@ -197,6 +193,12 @@ int juego_modo_JyAgente(tPartida p)
             destruir_busqueda_adversaria(&b);
             p->turno_de=PART_JUGADOR_1;
         }
+        i++;
+    }
+        if (i==10)
+    {
+        (p)->estado=PART_EMPATE;
+        printf("\n\nFUE EMPATE!\n\n");
     }
 }
 
@@ -208,10 +210,9 @@ int main()
     int comienza;
     tPartida p;
 
-
     int continuar_juego = 1;
 
-    int estado_juego;
+
 
     char Jugador_1[30];
     char Jugador_2[30];
@@ -234,13 +235,13 @@ int main()
             case 1 :
                 modo_juego= PART_MODO_USUARIO_VS_USUARIO;
                 nueva_partida(&p,modo_juego,comienza,Jugador_1,Jugador_2);
-                estado_juego= juego_modo_UvsU(p);
+                juego_modo_UvsU(p);
                 finalizar_partida(&p);
                 break;
             case 2:
                 nueva_partida(&p,modo_juego,comienza,Jugador_1,Jugador_2);
                 modo_juego=PART_MODO_USUARIO_VS_AGENTE_IA;
-                estado_juego= juego_modo_JyAgente(p);
+                juego_modo_JyAgente(p);
                 finalizar_partida(&p);
                 break;
         }
@@ -284,7 +285,7 @@ static void indicar_nombres( char* jugador_1, char* jugador_2 , int modo_juego)
 
 static int seleccionar_quien_comienza(int * opcion, char * jugador_1 , char* jugador_2)
 {
-    int ret_comeinza = 0;
+    int ret_comienza = 0;
 
     printf("\n Indice quien comenzara la partida: \n");
     printf("1 - %s\n",jugador_1);
@@ -296,17 +297,17 @@ static int seleccionar_quien_comienza(int * opcion, char * jugador_1 , char* jug
     switch (*opcion)
     {
         case 1:
-            ret_comeinza = PART_JUGADOR_1;
+            ret_comienza = PART_JUGADOR_1;
             break;
         case 2:
-            ret_comeinza = PART_JUGADOR_2;
+            ret_comienza = PART_JUGADOR_2;
             break;
         case 3:
-            ret_comeinza = PART_JUGADOR_RANDOM;
+            ret_comienza = PART_JUGADOR_RANDOM;
             break;
     }
 
-    return ret_comeinza;
+    return ret_comienza;
 }
 
 static int seguir_jugando()
